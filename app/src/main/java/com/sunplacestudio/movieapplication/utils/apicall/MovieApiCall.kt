@@ -13,6 +13,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Field
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
@@ -32,35 +33,43 @@ class MovieApiCall {
     fun requestMovieData(requestMovies: RequestMovies) {
         apiService
             .sendRequestPopular(apiKeyHelper.getApiKey())
-            .delay(100, TimeUnit.MILLISECONDS)
+            .onErrorReturn { JsonMovie(listOf()) }
+            .doOnError { it.printStackTrace() }
+            .delay(250, TimeUnit.MILLISECONDS)
             .flatMap {
                 requestMovies.onRequestMovies(it, CategoryMovie.RECOMMENDED)
                 return@flatMap apiService.sendRequestNowPlaying(apiKeyHelper.getApiKey())
             }
+            .onErrorReturn { JsonMovie(listOf()) }
+            .doOnError { it.printStackTrace() }
             .map { requestMovies.onRequestMovies(it, CategoryMovie.POPULAR) }
             .subscribeOn(ioScheduler)
             .subscribe()
 
     }
 
+
     fun searchMovie(string: String, requestSearch: RequestSearch) {
         apiService
             .searchMovie(apiKeyHelper.getApiKey(), string)
+            .onErrorReturn { JsonSearch(listOf()) }
+            .delay(250, TimeUnit.MILLISECONDS)
             .flatMap {jsonSearch ->
                 if (jsonSearch.results.isNotEmpty()) {
                     return@flatMap Observable.just(jsonSearch.results[0].id)
                 }
                 return@flatMap Observable.just(-1)
             }
+            .delay(250, TimeUnit.MILLISECONDS)
             .flatMap { id ->
                 if (id == -1) {
                     return@flatMap Observable.just(JsonMovieData("", 0.0f, -1, ""))
                 }
                 return@flatMap apiService.getMovieInfo(id, apiKeyHelper.getApiKey(), "ru-RU")
             }
-            .doOnNext {
-                requestSearch.onSearchOver(it)
-            }
+            .onErrorReturn { JsonMovieData("", 0.0f, -1, "") }
+            .doOnError { it.printStackTrace() }
+            .doOnNext { requestSearch.onSearchOver(it) }
             .subscribeOn(ioScheduler)
             .subscribe()
     }
@@ -83,6 +92,7 @@ class MovieApiCall {
         @GET("3/search/company")
         fun searchMovie(@Query("api_key") key: String, @Query("query") search: String): Observable<JsonSearch>
 
-        fun getMovieInfo(@Field("movie") id: Int, @Query("api_key") key: String, @Query("language") lan: String): Observable<JsonMovieData>
+        @GET("3/movie/{movieId}")
+        fun getMovieInfo(@Path("movieId") id: Int, @Query("api_key") key: String, @Query("language") lan: String): Observable<JsonMovieData>
     }
 }

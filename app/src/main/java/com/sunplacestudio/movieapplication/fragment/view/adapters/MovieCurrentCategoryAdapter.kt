@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.sunplacestudio.movieapplication.database.repository.Movie
 import com.sunplacestudio.movieapplication.databinding.ItemCategoryCurrentMovieBinding
 
@@ -30,13 +31,16 @@ class MovieCurrentCategoryAdapter : ListAdapter<Movie, MovieCurrentCategoryAdapt
 
         fun bind(movie: Movie) {
             dataItem.textViewMovieName.text = movie.name
+            dataItem.root.setOnClickListener {
+                Snackbar.make(dataItem.root, movie.name, Snackbar.LENGTH_SHORT).show()
+            }
             Glide.with(itemView).load(movie.posterUrl).into(dataItem.imageView)
             val count = (movie.voteAverage / 2).toInt()
             val mas = listOf(dataItem.star1, dataItem.star2, dataItem.star3, dataItem.star4, dataItem.star5)
             for (i in 0..count) {
                 mas[i].isActivated = true
             }
-            for (i in count..mas.size - 1) {
+            for (i in count until mas.size) {
                 mas[i].isActivated = false
             }
         }

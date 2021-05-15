@@ -10,6 +10,7 @@ interface MovieFragmentViewModel {
 
     fun getSearchResult(): LiveData<Movie>
 
-    fun searchFile(string: String)
+    fun searchMovie(string: String)
 
+    fun sendRequests()
 }
