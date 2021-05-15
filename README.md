@@ -1,10 +1,10 @@
 # MovieApplication
 Test task
 
-This task made with
-• RxJava 2
-• Retrofit 2
-• MVVM
+This task made with \n
+• RxJava 2 \n
+• Retrofit 2 \n
+• MVVM 
 • ROOM
 • Koin(DI)
 
