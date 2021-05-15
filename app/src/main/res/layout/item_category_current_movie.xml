@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@color/colorDark"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <androidx.cardview.widget.CardView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+
+        android:id="@+id/imageCardView"
+        android:layout_margin="@dimen/cartview_margin"
+        app:cardCornerRadius="20dp"
+        android:layout_width="200dp"
+        android:layout_height="250dp">
+        <ImageView
+            android:id="@+id/imageView"
+            android:scaleType="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="image" />
+    </androidx.cardview.widget.CardView>
+    
+    <TextView
+        app:layout_constraintTop_toBottomOf="@id/imageCardView"
+        app:layout_constraintLeft_toLeftOf="@id/imageCardView"
+        app:layout_constraintRight_toRightOf="@id/imageCardView"
+        app:layout_constraintBottom_toTopOf="@id/linearStars"
+
+        android:id="@+id/textViewMovieName"
+        android:gravity="center_vertical"
+        android:layout_margin="@dimen/cartview_margin_text"
+        android:textColor="@color/colorDarkWhite"
+        android:layout_width="0dp"
+        tools:text="Check text"
+        android:layout_height="25dp"/>
+
+    <LinearLayout
+        app:layout_constraintTop_toBottomOf="@id/textViewMovieName"
+        app:layout_constraintLeft_toLeftOf="@id/imageCardView"
+        app:layout_constraintRight_toRightOf="@id/imageCardView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/cartview_margin"
+
+        android:id="@+id/linearStars"
+        android:gravity="center_vertical"
+        android:layout_width="0dp"
+        android:layout_height="27dp">
+        <View
+            android:id="@+id/star1"
+            android:background="@drawable/baseline_star_selector"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+        <View
+            android:id="@+id/star2"
+            android:background="@drawable/baseline_star_selector"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+        <View
+            android:id="@+id/star3"
+            android:background="@drawable/baseline_star_selector"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+        <View
+            android:id="@+id/star4"
+            android:background="@drawable/baseline_star_selector"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+        <View
+            android:id="@+id/star5"
+            android:background="@drawable/baseline_star_selector"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

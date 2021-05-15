@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_text_margin">20dp</dimen>
+    <dimen name="search_edit_text_margin_top">40dp</dimen>
+    <dimen name="search_margin_top">50dp</dimen>
+    <dimen name="search_margin_left">10dp</dimen>
+    <dimen name="movies_margin_view_top">30dp</dimen>
+    <dimen name="movies_category_margin_start">40dp</dimen>
+    <dimen name="movies_category_margin_end">50dp</dimen>
+    <dimen name="recycler_view_item_margin_top">20dp</dimen>
+    <dimen name="recycler_margin_horizontal">10dp</dimen>
+    <dimen name="cartview_margin">10dp</dimen>
+    <dimen name="cartview_margin_text">10dp</dimen>
+</resources>

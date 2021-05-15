@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:background="@color/colorDark"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+        android:layout_marginTop="@dimen/recycler_margin_horizontal"
+        android:layout_marginStart="@dimen/movies_category_margin_start"
+        tools:text="@string/recommended_movies"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:id="@+id/categoryName"
+        android:textSize="20sp"
+        android:textColor="@color/colorWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"/>
+
+    <TextView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+
+        android:layout_marginTop="@dimen/recycler_margin_horizontal"
+        android:layout_marginEnd="@dimen/movies_category_margin_end"
+        android:gravity="center"
+        android:text="@string/any"
+        android:textColor="@color/colorGray"
+        android:layout_width="wrap_content"
+        android:textSize="15sp"
+        android:layout_height="40dp"/>
+    
+    <androidx.recyclerview.widget.RecyclerView
+        app:layout_constraintTop_toBottomOf="@id/categoryName"
+        app:layout_constraintLeft_toLeftOf="@id/categoryName"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:id="@+id/categoryRecycler"
+        android:layout_marginBottom="@dimen/recycler_margin_horizontal"
+        android:layout_marginTop="@dimen/recycler_view_item_margin_top"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">MovieApplication</string>
+    <string name="app_name" translatable="false">MovieApplication</string>
+    <string name="main_text">What will you watch ?</string>
+    <string name="recommended_movies">Recommended</string>
+    <string name="new_movies">New</string>
+    <string name="hint_text_search">Enter name</string>
+    <string name="any">Any...</string>
 </resources>
