@@ -1,13 +1,13 @@
 # MovieApplication
 Test task
 
-This task made with \n
-• RxJava 2 \n
-• Retrofit 2 \n
-• MVVM 
-• ROOM
-• Koin(DI)
+This task made with  <br>
+• RxJava 2 <br>
+• Retrofit 2  <br>
+• MVVM  <br>
+• ROOM <br>
+• Koin(DI) <br>
 
-• RecyclerView
-• Glide
-• RefreshLayout
+• RecyclerView <br>
+• Glide <br>
+• RefreshLayout <br>
