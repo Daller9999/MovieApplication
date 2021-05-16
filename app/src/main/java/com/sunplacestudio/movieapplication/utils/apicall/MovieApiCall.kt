@@ -17,7 +17,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
-class MovieApiCall(private val context: Context) {
+class MovieApiCall(context: Context) {
 
     private val serverBaseUrl = "https://api.themoviedb.org"
     private val retrofit = Retrofit.Builder()

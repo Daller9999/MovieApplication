@@ -1,5 +1,6 @@
 package com.sunplacestudio.movieapplication
 
+import com.sunplacestudio.movieapplication.utils.apicall.MovieApiCall
 import org.junit.Test
 
 import org.junit.Assert.*
