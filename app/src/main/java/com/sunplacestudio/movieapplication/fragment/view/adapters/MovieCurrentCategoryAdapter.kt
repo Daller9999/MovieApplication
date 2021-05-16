@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.sunplacestudio.movieapplication.database.repository.Movie
 import com.sunplacestudio.movieapplication.databinding.ItemCategoryCurrentMovieBinding
+import kotlin.math.ceil
 
 class MovieCurrentCategoryAdapter : ListAdapter<Movie, MovieCurrentCategoryAdapter.DataHolder>(callBack) {
 
@@ -36,13 +37,16 @@ class MovieCurrentCategoryAdapter : ListAdapter<Movie, MovieCurrentCategoryAdapt
                 Snackbar.make(dataItem.root, movie.name, Snackbar.LENGTH_SHORT).show()
             }
             Glide.with(itemView).load(movie.posterUrl).into(dataItem.imageView)
-            val count = (movie.voteAverage / 2).toInt()
             val mas = listOf(dataItem.star1, dataItem.star2, dataItem.star3, dataItem.star4, dataItem.star5)
+            var count = (movie.voteAverage / 2f).toInt()
+            count = if (count >= mas.size) mas.size - 1 else count
             for (i in 0..count) {
                 mas[i].isActivated = true
             }
-            for (i in count until mas.size) {
-                mas[i].isActivated = false
+            if (count < 4) {
+                for (i in count until mas.size) {
+                    mas[i].isActivated = false
+                }
             }
         }
 
