@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.sunplacestudio.movieapplication.databinding.MovieFragmentBinding
 import com.sunplacestudio.movieapplication.fragment.view.adapters.MovieCategoryListAdapter
 import com.sunplacestudio.movieapplication.fragment.viewmodel.MovieFragmentViewModelImpl
