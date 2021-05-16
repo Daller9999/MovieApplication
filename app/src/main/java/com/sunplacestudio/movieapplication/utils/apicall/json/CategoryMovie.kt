@@ -3,6 +3,7 @@ package com.sunplacestudio.movieapplication.utils.apicall.json
 enum class CategoryMovie {
     RECOMMENDED,
     POPULAR,
+    FOUND,
     NONE;
 
     companion object {

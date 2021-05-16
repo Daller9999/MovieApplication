@@ -6,4 +6,5 @@
     <string name="hint_text_search">Enter name</string>
     <string name="any">Any…</string>
     <string name="not_found">Nothing found</string>
+    <string name="movie_found">Movies found</string>
 </resources>

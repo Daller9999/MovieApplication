@@ -6,4 +6,5 @@
     <string name="hint_text_search">Введите название</string>
     <string name="any">Ещё…</string>
     <string name="not_found">Ничего не найдено</string>
+    <string name="movie_found">Найденные фильмы</string>
 </resources>

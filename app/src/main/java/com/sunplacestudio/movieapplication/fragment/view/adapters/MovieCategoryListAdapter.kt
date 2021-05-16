@@ -38,6 +38,7 @@ class MovieCategoryListAdapter: ListAdapter<MovieCategoryList, MovieCategoryList
             val name: String = when (CategoryMovie.getCategory(movieCategoryList.category)) {
                 CategoryMovie.RECOMMENDED -> dataItem.root.resources.getString(R.string.recommended_movies)
                 CategoryMovie.POPULAR -> dataItem.root.resources.getString(R.string.popular_movies)
+                CategoryMovie.FOUND -> dataItem.root.resources.getString(R.string.movie_found)
                 else -> "error"
             }
             dataItem.categoryName.text = name

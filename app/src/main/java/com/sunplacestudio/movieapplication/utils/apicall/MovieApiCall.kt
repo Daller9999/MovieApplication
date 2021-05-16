@@ -4,9 +4,8 @@ import android.content.Context
 import com.sunplacestudio.movieapplication.R
 import com.sunplacestudio.movieapplication.utils.ApiHelper
 import com.sunplacestudio.movieapplication.utils.apicall.json.CategoryMovie
-import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovieData
 import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovie
-import com.sunplacestudio.movieapplication.utils.apicall.json.search.JsonSearch
+import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovieData
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import org.koin.java.KoinJavaComponent.inject
@@ -51,27 +50,14 @@ class MovieApiCall(private val context: Context) {
     }
 
 
-    fun searchMovie(string: String, onSearchOver: (jsonMovieData: JsonMovieData) -> Unit) {
+    fun searchMovie(string: String, onSearchOver: (jsonMovie: JsonMovie) -> Unit) {
         apiService
             .searchMovie(apiKeyHelper.getApiKey(), string)
-            .onErrorReturn { JsonSearch(listOf()) }
+            .onErrorReturn { JsonMovie(listOf(JsonMovieData(nothingFound, 0f, -1, ""))) }
             .delay(250, TimeUnit.MILLISECONDS)
-            .flatMap {jsonSearch ->
-                if (jsonSearch.results.isNotEmpty()) {
-                    return@flatMap Observable.just(jsonSearch.results[0].id)
-                }
-                return@flatMap Observable.just(-1)
+            .doOnNext {
+                onSearchOver(it)
             }
-            .delay(250, TimeUnit.MILLISECONDS)
-            .flatMap { id ->
-                if (id == -1) {
-                    return@flatMap Observable.just(JsonMovieData(nothingFound, 0.0f, -1, ""))
-                }
-                return@flatMap apiService.getMovieInfo(id, apiKeyHelper.getApiKey(), "ru-RU")
-            }
-            .onErrorReturn { JsonMovieData(nothingFound, 0.0f, -1, "") }
-            .doOnError { it.printStackTrace() }
-            .doOnNext { onSearchOver(it) }
             .subscribeOn(ioScheduler)
             .subscribe()
     }
@@ -83,10 +69,7 @@ class MovieApiCall(private val context: Context) {
         @GET("3/movie/now_playing?language=ru-RU")
         fun sendRequestNowPlaying(@Query("api_key") key: String): Observable<JsonMovie>
 
-        @GET("3/search/company")
-        fun searchMovie(@Query("api_key") key: String, @Query("query") search: String): Observable<JsonSearch>
-
-        @GET("3/movie/{movieId}")
-        fun getMovieInfo(@Path("movieId") id: Int, @Query("api_key") key: String, @Query("language") lan: String): Observable<JsonMovieData>
+        @GET("3/search/movie?language=ru-RU&page=1&include_adult=true")
+        fun searchMovie(@Query("api_key") key: String, @Query("query") search: String): Observable<JsonMovie>
     }
 }

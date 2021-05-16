@@ -11,6 +11,7 @@ import com.sunplacestudio.movieapplication.database.repository.MovieCategoryList
 import com.sunplacestudio.movieapplication.utils.NetworkUtils
 import com.sunplacestudio.movieapplication.utils.apicall.MovieApiCall
 import com.sunplacestudio.movieapplication.utils.apicall.json.CategoryMovie
+import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovie
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import org.koin.java.KoinJavaComponent.inject
@@ -47,17 +48,7 @@ class MovieFragmentViewModelImpl(
 
         val disposable = movieRepository.clear().doOnComplete {
             movieApiCall.requestMovieData { jsonMovie, categoryMovie ->
-                val arrayList = ArrayList<Movie>()
-                var movieData: Movie
-                for (jsonMovieData in jsonMovie.results) {
-                    movieData = Movie(
-                        jsonMovieData.title,
-                        apiKeyHelper.getImageUrl() + jsonMovieData.poster_path,
-                        jsonMovieData.vote_average,
-                        jsonMovieData.id)
-                    arrayList.add(movieData)
-                }
-                compositeDisposable.add(movieRepository.addMovies(MovieCategoryList(categoryMovie.ordinal, arrayList)).subscribe())
+                compositeDisposable.add(movieRepository.addMovies(convertJsonMovieToMovieCategoryList(jsonMovie, categoryMovie)).subscribe())
             }
         }.subscribe()
         compositeDisposable.add(disposable)
@@ -75,10 +66,23 @@ class MovieFragmentViewModelImpl(
         if (!networkUtils.isConnected()) return
 
         movieApiCall.searchMovie(string) {
-            val movieData = Movie(it.title, apiKeyHelper.getImageUrl() + it.poster_path, it.vote_average, it.id)
-            val listMovieCategoryList = listOf(MovieCategoryList(CategoryMovie.RECOMMENDED.ordinal, listOf(movieData)))
+            val listMovieCategoryList = listOf(convertJsonMovieToMovieCategoryList(it, CategoryMovie.FOUND))
             movieCategoryListLiveData.postValue(listMovieCategoryList)
         }
+    }
+
+    private fun convertJsonMovieToMovieCategoryList(jsonMovie: JsonMovie, categoryMovie: CategoryMovie): MovieCategoryList {
+        val arrayList = ArrayList<Movie>()
+        var movieData: Movie
+        for (jsonMovieData in jsonMovie.results) {
+            movieData = Movie(
+                jsonMovieData.title,
+                apiKeyHelper.getImageUrl() + jsonMovieData.poster_path,
+                jsonMovieData.vote_average,
+                jsonMovieData.id)
+            arrayList.add(movieData)
+        }
+        return MovieCategoryList(categoryMovie.ordinal, arrayList)
     }
 
     override fun onCleared() {
