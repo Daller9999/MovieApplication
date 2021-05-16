@@ -13,4 +13,21 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="titleCategoryStyle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="titleCategoryElse">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/colorGray</item>
+    </style>
+
+    <style name="starsParams">
+        <item name="android:layout_height">@dimen/movie_star_size</item>
+        <item name="android:layout_width">@dimen/movie_star_size</item>
+        <item name="android:background">@drawable/baseline_star_selector</item>
+    </style>
+
 </resources>

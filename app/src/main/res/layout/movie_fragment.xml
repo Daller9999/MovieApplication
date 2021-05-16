@@ -33,8 +33,8 @@
             android:background="@drawable/baseline_search_24"
             android:layout_marginTop="@dimen/search_margin_top"
             android:layout_marginStart="@dimen/search_margin_left"
-            android:layout_width="20dp"
-            android:layout_height="20dp"/>
+            android:layout_width="@dimen/search_icon_size"
+            android:layout_height="@dimen/search_icon_size"/>
 
         <View
             app:layout_constraintLeft_toLeftOf="@id/mainTextView"
@@ -44,7 +44,7 @@
             android:background="@drawable/search_text_background"
             android:layout_marginTop="@dimen/search_edit_text_margin_top"
             android:layout_width="0dp"
-            android:layout_height="40dp"/>
+            android:layout_height="@dimen/edit_text_height"/>
 
         <EditText
             app:layout_constraintLeft_toRightOf="@id/viewSearch"
@@ -56,7 +56,7 @@
             android:layout_marginTop="@dimen/search_edit_text_margin_top"
             android:id="@+id/editTextSearch"
             android:layout_width="0dp"
-            android:layout_height="40dp"/>
+            android:layout_height="@dimen/edit_text_height"/>
 
         <View
             app:layout_constraintTop_toBottomOf="@id/editTextSearch"

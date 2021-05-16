@@ -10,29 +10,26 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
 
+        style="@style/titleCategoryStyle"
         android:layout_marginTop="@dimen/recycler_margin_horizontal"
         android:layout_marginStart="@dimen/movies_category_margin_start"
         tools:text="@string/recommended_movies"
         android:gravity="center"
-        android:textStyle="bold"
         android:id="@+id/categoryName"
-        android:textSize="20sp"
-        android:textColor="@color/colorWhite"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"/>
+        android:layout_height="@dimen/titles_category_height"/>
 
     <TextView
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
 
+        style="@style/titleCategoryElse"
         android:layout_marginTop="@dimen/recycler_margin_horizontal"
         android:layout_marginEnd="@dimen/movies_category_margin_end"
         android:gravity="center"
         android:text="@string/any"
-        android:textColor="@color/colorGray"
         android:layout_width="wrap_content"
-        android:textSize="15sp"
-        android:layout_height="40dp"/>
+        android:layout_height="@dimen/titles_category_height"/>
     
     <androidx.recyclerview.widget.RecyclerView
         app:layout_constraintTop_toBottomOf="@id/categoryName"

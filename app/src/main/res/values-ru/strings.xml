@@ -2,7 +2,8 @@
 <resources>
     <string name="main_text">Что будете смотреть сегодня ?</string>
     <string name="recommended_movies">Рекомендуем</string>
-    <string name="new_movies">Новые</string>
+    <string name="popular_movies">Популярные</string>
     <string name="hint_text_search">Введите название</string>
-    <string name="any">Ещё...</string>
+    <string name="any">Ещё…</string>
+    <string name="not_found">Ничего не найдено</string>
 </resources>

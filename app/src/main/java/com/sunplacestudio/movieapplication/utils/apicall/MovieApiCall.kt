@@ -1,6 +1,8 @@
 package com.sunplacestudio.movieapplication.utils.apicall
 
-import com.sunplacestudio.movieapplication.utils.ApiKeyHelper
+import android.content.Context
+import com.sunplacestudio.movieapplication.R
+import com.sunplacestudio.movieapplication.utils.ApiHelper
 import com.sunplacestudio.movieapplication.utils.apicall.json.CategoryMovie
 import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovieData
 import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovie
@@ -11,13 +13,12 @@ import org.koin.java.KoinJavaComponent.inject
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Field
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
-class MovieApiCall {
+class MovieApiCall(private val context: Context) {
 
     private val serverBaseUrl = "https://api.themoviedb.org"
     private val retrofit = Retrofit.Builder()
@@ -27,29 +28,30 @@ class MovieApiCall {
         .build()
 
     private val apiService = retrofit.create(ApiCall::class.java)
-    private val apiKeyHelper by inject(ApiKeyHelper::class.java)
+    private val apiKeyHelper by inject(ApiHelper::class.java)
     private val ioScheduler = Schedulers.io()
 
-    fun requestMovieData(requestMovies: RequestMovies) {
+    private val nothingFound = context.resources.getString(R.string.not_found)
+
+    fun requestMovieData(onRequestMovies: (jsonMovie: JsonMovie, categoryMovie: CategoryMovie) -> Unit) {
         apiService
             .sendRequestPopular(apiKeyHelper.getApiKey())
             .onErrorReturn { JsonMovie(listOf()) }
             .doOnError { it.printStackTrace() }
             .delay(250, TimeUnit.MILLISECONDS)
             .flatMap {
-                requestMovies.onRequestMovies(it, CategoryMovie.RECOMMENDED)
+                onRequestMovies(it, CategoryMovie.RECOMMENDED)
                 return@flatMap apiService.sendRequestNowPlaying(apiKeyHelper.getApiKey())
             }
             .onErrorReturn { JsonMovie(listOf()) }
             .doOnError { it.printStackTrace() }
-            .map { requestMovies.onRequestMovies(it, CategoryMovie.POPULAR) }
+            .map { onRequestMovies(it, CategoryMovie.POPULAR) }
             .subscribeOn(ioScheduler)
             .subscribe()
-
     }
 
 
-    fun searchMovie(string: String, requestSearch: RequestSearch) {
+    fun searchMovie(string: String, onSearchOver: (jsonMovieData: JsonMovieData) -> Unit) {
         apiService
             .searchMovie(apiKeyHelper.getApiKey(), string)
             .onErrorReturn { JsonSearch(listOf()) }
@@ -63,23 +65,15 @@ class MovieApiCall {
             .delay(250, TimeUnit.MILLISECONDS)
             .flatMap { id ->
                 if (id == -1) {
-                    return@flatMap Observable.just(JsonMovieData("", 0.0f, -1, ""))
+                    return@flatMap Observable.just(JsonMovieData(nothingFound, 0.0f, -1, ""))
                 }
                 return@flatMap apiService.getMovieInfo(id, apiKeyHelper.getApiKey(), "ru-RU")
             }
-            .onErrorReturn { JsonMovieData("", 0.0f, -1, "") }
+            .onErrorReturn { JsonMovieData(nothingFound, 0.0f, -1, "") }
             .doOnError { it.printStackTrace() }
-            .doOnNext { requestSearch.onSearchOver(it) }
+            .doOnNext { onSearchOver(it) }
             .subscribeOn(ioScheduler)
             .subscribe()
-    }
-
-    interface RequestMovies {
-        fun onRequestMovies(jsonMovie: JsonMovie, categoryMovie: CategoryMovie)
-    }
-
-    interface RequestSearch {
-        fun onSearchOver(jsonMovieData: JsonMovieData)
     }
 
     private interface ApiCall {

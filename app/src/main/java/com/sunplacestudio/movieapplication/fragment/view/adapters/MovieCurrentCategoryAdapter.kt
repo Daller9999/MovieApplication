@@ -31,6 +31,7 @@ class MovieCurrentCategoryAdapter : ListAdapter<Movie, MovieCurrentCategoryAdapt
 
         fun bind(movie: Movie) {
             dataItem.textViewMovieName.text = movie.name
+            dataItem.textViewMovieName.isSelected = true
             dataItem.root.setOnClickListener {
                 Snackbar.make(dataItem.root, movie.name, Snackbar.LENGTH_SHORT).show()
             }
