@@ -1,5 +1,6 @@
 package com.sunplacestudio.movieapplication
 
+import androidx.test.platform.app.InstrumentationRegistry
 import com.sunplacestudio.movieapplication.utils.apicall.MovieApiCall
 import org.junit.Test
 
@@ -14,5 +15,18 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
+    }
+
+    @Test
+    fun test() {
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        val movieApiCall = MovieApiCall(appContext)
+        movieApiCall.requestMovieData { jsonMovie, categoryMovie ->
+            print(categoryMovie)
+            print(jsonMovie)
+        }
+        movieApiCall.searchMovie("шрек") {
+            print(it)
+        }
     }
 }
