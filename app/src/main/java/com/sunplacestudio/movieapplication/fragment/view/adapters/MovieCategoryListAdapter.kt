@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.*
 import com.sunplacestudio.movieapplication.R
 import com.sunplacestudio.movieapplication.database.repository.MovieCategoryList
 import com.sunplacestudio.movieapplication.databinding.ItemCategoryMovieBinding
+import com.sunplacestudio.movieapplication.databinding.ItemHeaderBinding
 import com.sunplacestudio.movieapplication.utils.apicall.json.CategoryMovie
 
-class MovieCategoryListAdapter: ListAdapter<MovieCategoryList, MovieCategoryListAdapter.DataHolder>(callBack) {
+class MovieCategoryListAdapter: ListAdapter<MovieCategoryList, RecyclerView.ViewHolder>(callBack) {
 
     companion object {
         private val callBack = object : DiffUtil.ItemCallback<MovieCategoryList>() {
@@ -21,6 +22,15 @@ class MovieCategoryListAdapter: ListAdapter<MovieCategoryList, MovieCategoryList
                 return oldItem == newItem
             }
         }
+
+        const val HEADER = 0
+        const val CATEGORY = 1
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        if (position == 0)
+            return HEADER
+        return CATEGORY
     }
 
     inner class DataHolder(view: View): RecyclerView.ViewHolder(view) {
@@ -46,14 +56,30 @@ class MovieCategoryListAdapter: ListAdapter<MovieCategoryList, MovieCategoryList
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemCategoryMovieBinding.inflate(inflater, parent, false)
-        return DataHolder(binding.root)
+    class HeaderHolder(view: View): RecyclerView.ViewHolder(view) {
+
+        private val dataHolder = ItemHeaderBinding.bind(view)
+
+        init {
+
+        }
     }
 
-    override fun onBindViewHolder(holder: DataHolder, position: Int) {
-        holder.bind(getItem(position))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return if (viewType == CATEGORY) {
+            val binding = ItemCategoryMovieBinding.inflate(inflater, parent, false)
+            DataHolder(binding.root)
+        } else {
+            val binding = ItemHeaderBinding.inflate(inflater, parent, false)
+            HeaderHolder(binding.root)
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is DataHolder -> holder.bind(getItem(position))
+        }
     }
 
 }

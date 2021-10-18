@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -14,12 +15,13 @@ import com.sunplacestudio.movieapplication.databinding.MovieFragmentBinding
 import com.sunplacestudio.movieapplication.fragment.view.adapters.MovieCategoryListAdapter
 import com.sunplacestudio.movieapplication.fragment.viewmodel.MovieFragmentViewModelImpl
 import io.reactivex.Completable
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.java.KoinJavaComponent.inject
 import java.util.concurrent.TimeUnit
 
-class MovieFragment: Fragment() {
+class  MovieFragment: Fragment() {
 
-    private val movieFragmentViewModel by inject(MovieFragmentViewModelImpl::class.java)
+    private val movieFragmentViewModel by viewModel<MovieFragmentViewModelImpl>()
     private lateinit var binding: MovieFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
