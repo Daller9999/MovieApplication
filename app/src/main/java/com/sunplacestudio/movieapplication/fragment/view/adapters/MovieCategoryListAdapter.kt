@@ -1,5 +1,7 @@
 package com.sunplacestudio.movieapplication.fragment.view.adapters
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,15 +12,23 @@ import com.sunplacestudio.movieapplication.databinding.ItemCategoryMovieBinding
 import com.sunplacestudio.movieapplication.databinding.ItemHeaderBinding
 import com.sunplacestudio.movieapplication.utils.apicall.json.CategoryMovie
 
-class MovieCategoryListAdapter: ListAdapter<MovieCategoryList, RecyclerView.ViewHolder>(callBack) {
+class MovieCategoryListAdapter(
+    private val onEditTextChanged: (string: String) -> Unit
+) : ListAdapter<MovieCategoryList, RecyclerView.ViewHolder>(callBack) {
 
     companion object {
         private val callBack = object : DiffUtil.ItemCallback<MovieCategoryList>() {
-            override fun areItemsTheSame(oldItem: MovieCategoryList, newItem: MovieCategoryList): Boolean {
+            override fun areItemsTheSame(
+                oldItem: MovieCategoryList,
+                newItem: MovieCategoryList
+            ): Boolean {
                 return oldItem.category == newItem.category
             }
 
-            override fun areContentsTheSame(oldItem: MovieCategoryList, newItem: MovieCategoryList): Boolean {
+            override fun areContentsTheSame(
+                oldItem: MovieCategoryList,
+                newItem: MovieCategoryList
+            ): Boolean {
                 return oldItem == newItem
             }
         }
@@ -33,7 +43,7 @@ class MovieCategoryListAdapter: ListAdapter<MovieCategoryList, RecyclerView.View
         return CATEGORY
     }
 
-    inner class DataHolder(view: View): RecyclerView.ViewHolder(view) {
+    inner class DataHolder(view: View) : RecyclerView.ViewHolder(view) {
         private var dataItem: ItemCategoryMovieBinding = ItemCategoryMovieBinding.bind(view)
 
         init {
@@ -52,17 +62,43 @@ class MovieCategoryListAdapter: ListAdapter<MovieCategoryList, RecyclerView.View
                 else -> "error"
             }
             dataItem.categoryName.text = name
-            (dataItem.categoryRecycler.adapter as MovieCurrentCategoryAdapter).submitList(movieCategoryList.list)
+            (dataItem.categoryRecycler.adapter as MovieCurrentCategoryAdapter).submitList(
+                movieCategoryList.list
+            )
         }
     }
 
-    class HeaderHolder(view: View): RecyclerView.ViewHolder(view) {
+    class HeaderHolder(
+        view: View,
+        private val onEditTextChanged: (string: String) -> Unit
+    ) : RecyclerView.ViewHolder(view) {
 
         private val dataHolder = ItemHeaderBinding.bind(view)
 
         init {
+            dataHolder.editTextSearch.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    onEditTextChanged(s.toString())
+                }
 
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            })
         }
+    }
+
+    override fun submitList(list: MutableList<MovieCategoryList>?) {
+        val newList = mutableListOf<MovieCategoryList>()
+        newList.add(MovieCategoryList(Int.MAX_VALUE, emptyList()))
+        newList.addAll(list ?: mutableListOf())
+        super.submitList(newList)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -72,7 +108,7 @@ class MovieCategoryListAdapter: ListAdapter<MovieCategoryList, RecyclerView.View
             DataHolder(binding.root)
         } else {
             val binding = ItemHeaderBinding.inflate(inflater, parent, false)
-            HeaderHolder(binding.root)
+            HeaderHolder(binding.root, onEditTextChanged)
         }
     }
 

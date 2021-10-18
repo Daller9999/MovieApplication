@@ -2,81 +2,17 @@
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:id="@+id/swipeRefresh"
-    android:background="@color/colorBackBlue">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/mainRecyclerMovies"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorBackBlue">
+        android:layout_height="0dp"
+        android:background="@color/colorDark"
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/main_text"
-            android:layout_marginTop="@dimen/main_text_margin"
-            android:layout_marginEnd="@dimen/main_text_margin"
-            android:layout_marginStart="@dimen/main_text_margin"
-            android:id="@+id/mainTextView"
-            style="@style/MainTextStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            app:layout_constraintLeft_toLeftOf="@id/mainTextView"
-            app:layout_constraintTop_toBottomOf="@id/mainTextView"
-
-            android:id="@+id/viewSearch"
-            android:background="@drawable/baseline_search_24"
-            android:layout_marginTop="@dimen/search_margin_top"
-            android:layout_marginStart="@dimen/search_margin_left"
-            android:layout_width="@dimen/search_icon_size"
-            android:layout_height="@dimen/search_icon_size"/>
-
-        <View
-            app:layout_constraintLeft_toLeftOf="@id/mainTextView"
-            app:layout_constraintRight_toRightOf="@id/mainTextView"
-            app:layout_constraintTop_toBottomOf="@id/mainTextView"
-
-            android:background="@drawable/search_text_background"
-            android:layout_marginTop="@dimen/search_edit_text_margin_top"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/edit_text_height"/>
-
-        <EditText
-            app:layout_constraintLeft_toRightOf="@id/viewSearch"
-            app:layout_constraintRight_toRightOf="@id/mainTextView"
-            app:layout_constraintTop_toBottomOf="@id/mainTextView"
-
-            android:textColorHint="@color/colorWhite"
-            android:hint="@string/hint_text_search"
-            android:layout_marginTop="@dimen/search_edit_text_margin_top"
-            android:id="@+id/editTextSearch"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/edit_text_height"/>
-
-        <View
-            app:layout_constraintTop_toBottomOf="@id/editTextSearch"
-            app:layout_constraintBottom_toBottomOf="parent"
-
-            android:id="@+id/viewMoviesBack"
-            android:layout_marginTop="@dimen/movies_margin_view_top"
-            android:background="@drawable/movies_list_background"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            app:layout_constraintTop_toTopOf="@id/viewMoviesBack"
-            app:layout_constraintBottom_toBottomOf="parent"
-
-            android:id="@+id/mainRecyclerMovies"
-            android:layout_marginTop="@dimen/movies_margin_view_top"
-            android:background="@drawable/movies_list_background"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

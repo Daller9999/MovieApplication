@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
+import com.sunplacestudio.movieapplication.database.repository.MovieCategoryList
 import com.sunplacestudio.movieapplication.databinding.MovieFragmentBinding
 import com.sunplacestudio.movieapplication.fragment.view.adapters.MovieCategoryListAdapter
 import com.sunplacestudio.movieapplication.fragment.viewmodel.MovieFragmentViewModelImpl
@@ -27,16 +28,16 @@ class  MovieFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = MovieFragmentBinding.inflate(inflater, container, false)
 
-        val movieCategoryListAdapter = MovieCategoryListAdapter()
+        val movieCategoryListAdapter = MovieCategoryListAdapter {
+            movieFragmentViewModel.searchMovie(it)
+        }
 
         binding.mainRecyclerMovies.layoutManager = LinearLayoutManager(context)
-        val snapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(binding.mainRecyclerMovies)
         binding.mainRecyclerMovies.adapter = movieCategoryListAdapter
 
         movieFragmentViewModel.getMovies().observe(viewLifecycleOwner, Observer {
             if (it.isEmpty()) return@Observer
-            movieCategoryListAdapter.submitList(it)
+            movieCategoryListAdapter.submitList(it as MutableList<MovieCategoryList>?)
         })
 
         binding.swipeRefresh.setOnRefreshListener {
@@ -45,15 +46,6 @@ class  MovieFragment: Fragment() {
                 binding.swipeRefresh.isRefreshing = false
             }.delay(1500, TimeUnit.MILLISECONDS).subscribe()
         }
-
-        binding.editTextSearch.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                if (s.toString().isEmpty()) return
-                movieFragmentViewModel.searchMovie(s.toString())
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
 
         return binding.root
     }

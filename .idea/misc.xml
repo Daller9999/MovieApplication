@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Work/MovieApplication/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.4630208333333333" />
+        <entry key="..\:/Work/MovieApplication/app/src/main/res/drawable/movie_back.xml" value="0.4630208333333333" />
+        <entry key="..\:/Work/MovieApplication/app/src/main/res/drawable/movies_list_background.xml" value="0.4630208333333333" />
         <entry key="..\:/Work/MovieApplication/app/src/main/res/layout/activity_main.xml" value="0.446875" />
         <entry key="..\:/Work/MovieApplication/app/src/main/res/layout/item_category_movie.xml" value="0.446875" />
         <entry key="..\:/Work/MovieApplication/app/src/main/res/layout/item_header.xml" value="0.446875" />

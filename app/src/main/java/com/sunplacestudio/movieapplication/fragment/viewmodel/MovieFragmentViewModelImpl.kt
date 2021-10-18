@@ -65,9 +65,13 @@ class MovieFragmentViewModelImpl(
     override fun searchMovie(string: String) {
         if (!networkUtils.isConnected()) return
 
-        movieApiCall.searchMovie(string) {
-            val listMovieCategoryList = listOf(convertJsonMovieToMovieCategoryList(it, CategoryMovie.FOUND))
-            movieCategoryListLiveData.postValue(listMovieCategoryList)
+        if (string.isNotEmpty()) {
+            movieApiCall.searchMovie(string) {
+                val listMovieCategoryList = listOf(convertJsonMovieToMovieCategoryList(it, CategoryMovie.FOUND))
+                movieCategoryListLiveData.postValue(listMovieCategoryList)
+            }
+        } else {
+            sendRequests()
         }
     }
 
