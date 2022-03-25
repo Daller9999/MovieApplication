@@ -36,7 +36,6 @@ class MovieCurrentCategoryAdapter(
             dataItem.textViewMovieName.isSelected = true
             dataItem.root.setOnClickListener {
                 onMovieClicked(movie.idMovie)
-                Snackbar.make(dataItem.root, movie.name, Snackbar.LENGTH_SHORT).show()
             }
             Glide.with(itemView).load(movie.posterUrl).into(dataItem.imageView)
             val mas = listOf(dataItem.star1, dataItem.star2, dataItem.star3, dataItem.star4, dataItem.star5)
