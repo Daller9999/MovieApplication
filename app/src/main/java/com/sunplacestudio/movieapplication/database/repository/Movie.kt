@@ -7,6 +7,7 @@ data class Movie(
     val posterUrl: String,
     val voteAverage: Float,
     val idMovie: Int,
+    val overview: String,
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null
 )

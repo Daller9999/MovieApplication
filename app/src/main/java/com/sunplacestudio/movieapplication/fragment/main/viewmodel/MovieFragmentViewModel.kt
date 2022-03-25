@@ -1,4 +1,4 @@
-package com.sunplacestudio.movieapplication.fragment.viewmodel
+package com.sunplacestudio.movieapplication.fragment.main.viewmodel
 
 import androidx.lifecycle.LiveData
 import com.sunplacestudio.movieapplication.database.repository.Movie

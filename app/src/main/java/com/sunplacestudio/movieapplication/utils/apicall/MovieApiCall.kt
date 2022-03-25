@@ -53,7 +53,7 @@ class MovieApiCall(context: Context) {
     fun searchMovie(string: String, onSearchOver: (jsonMovie: JsonMovie) -> Unit) {
         apiService
             .searchMovie(apiKeyHelper.getApiKey(), string)
-            .onErrorReturn { JsonMovie(listOf(JsonMovieData(nothingFound, 0f, -1, ""))) }
+            .onErrorReturn { JsonMovie(listOf(JsonMovieData(nothingFound, 0f, -1, "", ""))) }
             .delay(250, TimeUnit.MILLISECONDS)
             .doOnNext {
                 onSearchOver(it)

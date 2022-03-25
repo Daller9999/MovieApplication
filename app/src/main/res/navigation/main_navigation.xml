@@ -4,11 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/movieFragment"
-    tools:ignore="UnusedNavigation">
+    tools:ignore="UnusedNavigation"
+    app:startDestination="@id/moviesFragment">
+    <fragment
+        android:id="@+id/moviesFragment"
+        android:name="com.sunplacestudio.movieapplication.fragment.main.view.MoviesFragment"
+        android:label="MoviesFragment" >
+        <action
+            android:id="@+id/action_moviesFragment_to_movieFragment"
+            app:destination="@id/movieFragment" />
+    </fragment>
     <fragment
         android:id="@+id/movieFragment"
-        android:name="com.sunplacestudio.movieapplication.fragment.view.MovieFragment"
-        android:label="Movie">
-    </fragment>
+        android:name="com.sunplacestudio.movieapplication.fragment.movie.MovieFragment"
+        android:label="MovieFragment" />
 </navigation>

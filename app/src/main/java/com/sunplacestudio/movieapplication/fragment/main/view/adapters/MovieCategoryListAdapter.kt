@@ -1,4 +1,4 @@
-package com.sunplacestudio.movieapplication.fragment.view.adapters
+package com.sunplacestudio.movieapplication.fragment.main.view.adapters
 
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,7 +13,8 @@ import com.sunplacestudio.movieapplication.databinding.ItemHeaderBinding
 import com.sunplacestudio.movieapplication.utils.apicall.json.CategoryMovie
 
 class MovieCategoryListAdapter(
-    private val onEditTextChanged: (string: String) -> Unit
+    private val onEditTextChanged: (string: String) -> Unit,
+    private val onMovieClicked: (id: Int) -> Unit
 ) : ListAdapter<MovieCategoryList, RecyclerView.ViewHolder>(callBack) {
 
     companion object {
@@ -47,7 +48,7 @@ class MovieCategoryListAdapter(
         private var dataItem: ItemCategoryMovieBinding = ItemCategoryMovieBinding.bind(view)
 
         init {
-            val movieCurrentCategoryAdapter = MovieCurrentCategoryAdapter()
+            val movieCurrentCategoryAdapter = MovieCurrentCategoryAdapter(onMovieClicked)
             val snapHelper = LinearSnapHelper()
             snapHelper.attachToRecyclerView(dataItem.categoryRecycler)
             dataItem.categoryRecycler.layoutManager = LinearLayoutManager(dataItem.root.context, LinearLayoutManager.HORIZONTAL, false)

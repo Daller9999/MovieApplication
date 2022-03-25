@@ -1,4 +1,4 @@
-package com.sunplacestudio.movieapplication.fragment.view.adapters
+package com.sunplacestudio.movieapplication.fragment.main.view.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +10,10 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.sunplacestudio.movieapplication.database.repository.Movie
 import com.sunplacestudio.movieapplication.databinding.ItemCategoryCurrentMovieBinding
-import kotlin.math.ceil
 
-class MovieCurrentCategoryAdapter : ListAdapter<Movie, MovieCurrentCategoryAdapter.DataHolder>(callBack) {
+class MovieCurrentCategoryAdapter(
+    private val onMovieClicked: (id: Int) -> Unit
+) : ListAdapter<Movie, MovieCurrentCategoryAdapter.DataHolder>(callBack) {
 
     companion object {
         private val callBack = object : DiffUtil.ItemCallback<Movie>() {
@@ -34,6 +35,7 @@ class MovieCurrentCategoryAdapter : ListAdapter<Movie, MovieCurrentCategoryAdapt
             dataItem.textViewMovieName.text = movie.name
             dataItem.textViewMovieName.isSelected = true
             dataItem.root.setOnClickListener {
+                onMovieClicked(movie.idMovie)
                 Snackbar.make(dataItem.root, movie.name, Snackbar.LENGTH_SHORT).show()
             }
             Glide.with(itemView).load(movie.posterUrl).into(dataItem.imageView)

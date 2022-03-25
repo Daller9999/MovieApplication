@@ -1,36 +1,49 @@
-package com.sunplacestudio.movieapplication.fragment.view
+package com.sunplacestudio.movieapplication.fragment.main.view
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
+import com.sunplacestudio.movieapplication.MainActivity
+import com.sunplacestudio.movieapplication.R
 import com.sunplacestudio.movieapplication.database.repository.MovieCategoryList
 import com.sunplacestudio.movieapplication.databinding.MovieFragmentBinding
-import com.sunplacestudio.movieapplication.fragment.view.adapters.MovieCategoryListAdapter
-import com.sunplacestudio.movieapplication.fragment.viewmodel.MovieFragmentViewModelImpl
+import com.sunplacestudio.movieapplication.fragment.main.view.adapters.MovieCategoryListAdapter
+import com.sunplacestudio.movieapplication.fragment.main.viewmodel.MovieFragmentViewModelImpl
+import com.sunplacestudio.movieapplication.fragment.movie.MovieFragment
 import io.reactivex.Completable
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.java.KoinJavaComponent.inject
 import java.util.concurrent.TimeUnit
 
-class  MovieFragment: Fragment() {
+class MoviesFragment : Fragment() {
 
     private val movieFragmentViewModel by viewModel<MovieFragmentViewModelImpl>()
     private lateinit var binding: MovieFragmentBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private val navController by lazy {
+        Navigation.findNavController(activity as MainActivity, R.id.nav_host_fragment)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = MovieFragmentBinding.inflate(inflater, container, false)
 
-        val movieCategoryListAdapter = MovieCategoryListAdapter {
+        val movieCategoryListAdapter = MovieCategoryListAdapter({
             movieFragmentViewModel.searchMovie(it)
-        }
+        }, {
+            navController.navigate(
+                R.id.action_moviesFragment_to_movieFragment,
+                bundleOf(MovieFragment.MOVIE_ARGS to it)
+            )
+        })
 
         binding.mainRecyclerMovies.layoutManager = LinearLayoutManager(context)
         binding.mainRecyclerMovies.adapter = movieCategoryListAdapter
