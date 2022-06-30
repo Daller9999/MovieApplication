@@ -13,7 +13,6 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
@@ -70,6 +69,9 @@ class MovieApiCall(context: Context) {
         fun sendRequestNowPlaying(@Query("api_key") key: String): Observable<JsonMovie>
 
         @GET("3/search/movie?language=ru-RU&page=1&include_adult=true")
-        fun searchMovie(@Query("api_key") key: String, @Query("query") search: String): Observable<JsonMovie>
+        fun searchMovie(
+            @Query("api_key") key: String,
+            @Query("query") search: String
+        ): Observable<JsonMovie>
     }
 }
