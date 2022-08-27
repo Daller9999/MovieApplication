@@ -3,11 +3,10 @@ package com.sunplacestudio.movieapplication.fragment.main.view.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 import com.sunplacestudio.movieapplication.database.repository.Movie
 import com.sunplacestudio.movieapplication.databinding.ItemCategoryCurrentMovieBinding
 

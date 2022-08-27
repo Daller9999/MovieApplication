@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.sunplacestudio.movieapplication.database.repository.Movie
 import com.sunplacestudio.movieapplication.database.repository.MovieCategoryList
 import com.sunplacestudio.movieapplication.database.repository.MovieRepository
@@ -16,16 +17,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 
 class MovieFragmentViewModel(
-    application: Application,
     private val movieRepository: MovieRepository,
     private val movieApiCall: MovieApiCall,
     private val apiHelper: ApiHelper,
     private val networkUtils: NetworkUtils
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     private val movieCategoryListLiveData: MutableLiveData<List<MovieCategoryList>> =
         MutableLiveData()
-    private val searchResult: MutableLiveData<Movie> = MutableLiveData()
     private val compositeDisposable = CompositeDisposable()
 
     init {
@@ -59,10 +58,6 @@ class MovieFragmentViewModel(
 
     fun getMovies(): LiveData<List<MovieCategoryList>> {
         return movieCategoryListLiveData
-    }
-
-    fun getSearchResult(): LiveData<Movie> {
-        return searchResult
     }
 
     fun searchMovie(string: String) {

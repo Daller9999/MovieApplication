@@ -63,13 +63,13 @@ class MovieApiCall(
     }
 
     private interface ApiCall {
-        @GET("3/movie/popular?language=ru-RU&page=1")
+        @GET("3/movie/popular?language=en-US&page=1")
         fun sendRequestPopular(@Query("api_key") key: String): Observable<JsonMovie>
 
-        @GET("3/movie/now_playing?language=ru-RU")
+        @GET("3/movie/now_playing?language=en-US")
         fun sendRequestNowPlaying(@Query("api_key") key: String): Observable<JsonMovie>
 
-        @GET("3/search/movie?language=ru-RU&page=1&include_adult=true")
+        @GET("3/search/movie?language=en-US&page=1&include_adult=true")
         fun searchMovie(
             @Query("api_key") key: String,
             @Query("query") search: String

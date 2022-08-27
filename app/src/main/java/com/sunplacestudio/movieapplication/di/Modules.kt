@@ -11,8 +11,8 @@ import com.sunplacestudio.movieapplication.utils.apicall.MovieApiCall
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    factory { MovieFragmentViewModel(get(), get(), get(), get(), get()) }
-    factory { MovieViewModel(get(), get()) }
+    factory { MovieFragmentViewModel(get(), get(), get(), get()) }
+    factory { MovieViewModel(get()) }
 }
 
 val dataBaseModule = module {

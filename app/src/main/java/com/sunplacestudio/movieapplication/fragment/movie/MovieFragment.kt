@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.sunplacestudio.movieapplication.databinding.MovieCurrentFragmentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -37,13 +36,13 @@ class MovieFragment : Fragment() {
             }
         }
 
-        movieViewModel.movie.observe(viewLifecycleOwner, Observer {
+        movieViewModel.movie.observe(viewLifecycleOwner) {
             with(binding) {
                 Glide.with(imageView).load(it.posterUrl).into(imageView)
                 textViewTitle.text = it.name
                 textViewOverview.text = it.overview
             }
-        })
+        }
     }
 
 

@@ -44,7 +44,10 @@ class MovieCategoryListAdapter(
         return CATEGORY
     }
 
-    inner class DataHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class DataHolder(
+        view: View,
+        onMovieClicked: (id: Int) -> Unit
+    ) : RecyclerView.ViewHolder(view) {
         private var dataItem: ItemCategoryMovieBinding = ItemCategoryMovieBinding.bind(view)
 
         init {
@@ -98,7 +101,7 @@ class MovieCategoryListAdapter(
     override fun submitList(list: List<MovieCategoryList>?) {
         val newList = mutableListOf<MovieCategoryList>()
         newList.add(MovieCategoryList(Int.MAX_VALUE, emptyList()))
-        newList.addAll(list ?: mutableListOf())
+        newList.addAll(list ?: emptyList())
         super.submitList(newList)
     }
 
@@ -106,7 +109,7 @@ class MovieCategoryListAdapter(
         val inflater = LayoutInflater.from(parent.context)
         return if (viewType == CATEGORY) {
             val binding = ItemCategoryMovieBinding.inflate(inflater, parent, false)
-            DataHolder(binding.root)
+            DataHolder(binding.root, onMovieClicked)
         } else {
             val binding = ItemHeaderBinding.inflate(inflater, parent, false)
             HeaderHolder(binding.root, onEditTextChanged)
