@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 
 class NetworkUtils(private val context: Context) {
+
     fun isConnected(): Boolean {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
@@ -14,4 +15,5 @@ class NetworkUtils(private val context: Context) {
         }
         return result
     }
+
 }

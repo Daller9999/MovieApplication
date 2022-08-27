@@ -8,7 +8,6 @@ import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovie
 import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovieData
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
-import org.koin.java.KoinJavaComponent.inject
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -16,7 +15,10 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
-class MovieApiCall(context: Context) {
+class MovieApiCall(
+    context: Context,
+    private val apiKeyHelper: ApiHelper
+) {
 
     private val serverBaseUrl = "https://api.themoviedb.org"
     private val retrofit = Retrofit.Builder()
@@ -26,7 +28,6 @@ class MovieApiCall(context: Context) {
         .build()
 
     private val apiService = retrofit.create(ApiCall::class.java)
-    private val apiKeyHelper by inject(ApiHelper::class.java)
     private val ioScheduler = Schedulers.io()
 
     private val nothingFound = context.resources.getString(R.string.not_found)

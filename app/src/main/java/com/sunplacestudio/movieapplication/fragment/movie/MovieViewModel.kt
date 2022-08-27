@@ -6,14 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sunplacestudio.movieapplication.database.repository.Movie
 import com.sunplacestudio.movieapplication.database.repository.MovieRepository
-import com.sunplacestudio.movieapplication.database.repository.MovieRepositoryImpl
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class MovieViewModel(
     application: Application,
-    private val movieRepository: MovieRepositoryImpl
+    private val movieRepository: MovieRepository
 ) : AndroidViewModel(application) {
 
     private val _movie: MutableLiveData<Movie> = MutableLiveData()

@@ -11,10 +11,9 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sunplacestudio.movieapplication.MainActivity
 import com.sunplacestudio.movieapplication.R
-import com.sunplacestudio.movieapplication.database.repository.MovieCategoryList
 import com.sunplacestudio.movieapplication.databinding.MovieFragmentBinding
 import com.sunplacestudio.movieapplication.fragment.main.view.adapters.MovieCategoryListAdapter
-import com.sunplacestudio.movieapplication.fragment.main.viewmodel.MovieFragmentViewModelImpl
+import com.sunplacestudio.movieapplication.fragment.main.viewmodel.MovieFragmentViewModel
 import com.sunplacestudio.movieapplication.fragment.movie.MovieFragment
 import io.reactivex.Completable
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,7 +21,7 @@ import java.util.concurrent.TimeUnit
 
 class MoviesFragment : Fragment() {
 
-    private val movieFragmentViewModel by viewModel<MovieFragmentViewModelImpl>()
+    private val movieFragmentViewModel by viewModel<MovieFragmentViewModel>()
     private lateinit var binding: MovieFragmentBinding
 
     private val navController by lazy {
@@ -50,7 +49,7 @@ class MoviesFragment : Fragment() {
 
         movieFragmentViewModel.getMovies().observe(viewLifecycleOwner, Observer {
             if (it.isEmpty()) return@Observer
-            movieCategoryListAdapter.submitList(it as MutableList<MovieCategoryList>?)
+            movieCategoryListAdapter.submitList(it)
         })
 
         binding.swipeRefresh.setOnRefreshListener {

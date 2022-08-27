@@ -95,7 +95,7 @@ class MovieCategoryListAdapter(
         }
     }
 
-    override fun submitList(list: MutableList<MovieCategoryList>?) {
+    override fun submitList(list: List<MovieCategoryList>?) {
         val newList = mutableListOf<MovieCategoryList>()
         newList.add(MovieCategoryList(Int.MAX_VALUE, emptyList()))
         newList.addAll(list ?: mutableListOf())

@@ -1,15 +1,17 @@
 package com.sunplacestudio.movieapplication.di
 
 import com.sunplacestudio.movieapplication.database.DataBase
-import com.sunplacestudio.movieapplication.database.repository.MovieRepositoryImpl
+import com.sunplacestudio.movieapplication.database.repository.MovieRepository
 import com.sunplacestudio.movieapplication.database.room.MovieDao
-import com.sunplacestudio.movieapplication.fragment.main.viewmodel.MovieFragmentViewModelImpl
+import com.sunplacestudio.movieapplication.fragment.main.viewmodel.MovieFragmentViewModel
 import com.sunplacestudio.movieapplication.fragment.movie.MovieViewModel
 import com.sunplacestudio.movieapplication.utils.ApiHelper
+import com.sunplacestudio.movieapplication.utils.NetworkUtils
+import com.sunplacestudio.movieapplication.utils.apicall.MovieApiCall
 import org.koin.dsl.module
 
-val movieViewModelModule = module {
-    factory { MovieFragmentViewModelImpl(get()) }
+val viewModelModule = module {
+    factory { MovieFragmentViewModel(get(), get(), get(), get(), get()) }
     factory { MovieViewModel(get(), get()) }
 }
 
@@ -22,9 +24,19 @@ val dataBaseModule = module {
 
     single { provideVersions(get()) }
 
-    single { MovieRepositoryImpl(get()) }
+    single { MovieRepository(get()) }
+}
+
+val networkModule = module {
+
+    single { NetworkUtils(get()) }
+
+    single { MovieApiCall(get(), get()) }
+
 }
 
 val apiKeyModule = module {
     single { ApiHelper() }
 }
+
+val modulesList = viewModelModule + dataBaseModule + networkModule + apiKeyModule

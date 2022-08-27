@@ -30,8 +30,7 @@ class MovieFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val args = arguments
-        if (args != null) {
+        arguments?.let { args ->
             val id = args.getInt(MOVIE_ARGS, -1)
             if (id > 0) {
                 movieViewModel.uploadMovie(id)
