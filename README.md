@@ -1,13 +1,15 @@
 # MovieApplication
 Test task
 
-This task made with  <br>
-• RxJava 2 <br>
-• Retrofit 2  <br>
-• MVVM  <br>
-• ROOM <br>
-• Koin(DI) <br>
+This example of my code was made with  
 
-• RecyclerView <br>
-• Glide <br>
-• RefreshLayout <br>
+- RxJava 2 
+- Retrofit 2
+- MVVM  
+- ROOM 
+- Koin(DI)
+- RecyclerView
+- Glide
+- RefreshLayout
+
+This is example of my code, it's old pet project, that I made for job interview years ago.
