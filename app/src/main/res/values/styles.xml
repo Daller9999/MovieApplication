@@ -30,4 +30,11 @@
         <item name="android:background">@drawable/baseline_star_selector</item>
     </style>
 
+    <style name="starsParamsMovie">
+        <item name="android:layout_height">@dimen/movie_star_size_big</item>
+        <item name="android:layout_width">@dimen/movie_star_size_big</item>
+        <item name="android:background">@drawable/baseline_star_selector</item>
+    </style>
+
+
 </resources>

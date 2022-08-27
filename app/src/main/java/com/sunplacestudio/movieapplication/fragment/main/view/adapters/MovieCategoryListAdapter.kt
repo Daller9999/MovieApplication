@@ -1,12 +1,12 @@
 package com.sunplacestudio.movieapplication.fragment.main.view.adapters
 
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.*
 import com.sunplacestudio.movieapplication.R
+import com.sunplacestudio.movieapplication.database.repository.Movie
 import com.sunplacestudio.movieapplication.database.repository.MovieCategoryList
 import com.sunplacestudio.movieapplication.databinding.ItemCategoryMovieBinding
 import com.sunplacestudio.movieapplication.databinding.ItemHeaderBinding
@@ -14,7 +14,7 @@ import com.sunplacestudio.movieapplication.utils.apicall.json.CategoryMovie
 
 class MovieCategoryListAdapter(
     private val onEditTextChanged: (string: String) -> Unit,
-    private val onMovieClicked: (id: Int) -> Unit
+    private val onMovieClicked: (movie: Movie) -> Unit
 ) : ListAdapter<MovieCategoryList, RecyclerView.ViewHolder>(callBack) {
 
     companion object {
@@ -46,29 +46,35 @@ class MovieCategoryListAdapter(
 
     class DataHolder(
         view: View,
-        onMovieClicked: (id: Int) -> Unit
+        onMovieClicked: (movie: Movie) -> Unit
     ) : RecyclerView.ViewHolder(view) {
         private var dataItem: ItemCategoryMovieBinding = ItemCategoryMovieBinding.bind(view)
 
         init {
-            val movieCurrentCategoryAdapter = MovieCurrentCategoryAdapter(onMovieClicked)
-            val snapHelper = LinearSnapHelper()
-            snapHelper.attachToRecyclerView(dataItem.categoryRecycler)
-            dataItem.categoryRecycler.layoutManager = LinearLayoutManager(dataItem.root.context, LinearLayoutManager.HORIZONTAL, false)
-            dataItem.categoryRecycler.adapter = movieCurrentCategoryAdapter
+            with(dataItem) {
+                val movieCurrentCategoryAdapter = MovieCurrentCategoryAdapter(onMovieClicked)
+                val snapHelper = LinearSnapHelper()
+                snapHelper.attachToRecyclerView(categoryRecycler)
+                categoryRecycler.layoutManager = LinearLayoutManager(
+                    root.context, LinearLayoutManager.HORIZONTAL, false
+                )
+                categoryRecycler.adapter = movieCurrentCategoryAdapter
+            }
         }
 
         fun bind(movieCategoryList: MovieCategoryList) {
-            val name: String = when (CategoryMovie.getCategory(movieCategoryList.category)) {
-                CategoryMovie.RECOMMENDED -> dataItem.root.resources.getString(R.string.recommended_movies)
-                CategoryMovie.POPULAR -> dataItem.root.resources.getString(R.string.popular_movies)
-                CategoryMovie.FOUND -> dataItem.root.resources.getString(R.string.movie_found)
-                else -> "error"
+            with(dataItem) {
+                val name: String = when (CategoryMovie.getCategory(movieCategoryList.category)) {
+                    CategoryMovie.RECOMMENDED -> root.context.getString(R.string.recommended_movies)
+                    CategoryMovie.POPULAR -> root.context.getString(R.string.popular_movies)
+                    CategoryMovie.FOUND -> root.context.getString(R.string.movie_found)
+                    else -> "error"
+                }
+                categoryName.text = name
+                (categoryRecycler.adapter as MovieCurrentCategoryAdapter).submitList(
+                    movieCategoryList.list
+                )
             }
-            dataItem.categoryName.text = name
-            (dataItem.categoryRecycler.adapter as MovieCurrentCategoryAdapter).submitList(
-                movieCategoryList.list
-            )
         }
     }
 
@@ -80,21 +86,9 @@ class MovieCategoryListAdapter(
         private val dataHolder = ItemHeaderBinding.bind(view)
 
         init {
-            dataHolder.editTextSearch.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                    onEditTextChanged(s.toString())
-                }
-
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                }
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            })
+            dataHolder.editTextSearch.addTextChangedListener {
+                onEditTextChanged(it.toString())
+            }
         }
     }
 
@@ -107,12 +101,15 @@ class MovieCategoryListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return if (viewType == CATEGORY) {
-            val binding = ItemCategoryMovieBinding.inflate(inflater, parent, false)
-            DataHolder(binding.root, onMovieClicked)
-        } else {
-            val binding = ItemHeaderBinding.inflate(inflater, parent, false)
-            HeaderHolder(binding.root, onEditTextChanged)
+        return when (viewType) {
+            CATEGORY -> DataHolder(
+                ItemCategoryMovieBinding.inflate(inflater, parent, false).root,
+                onMovieClicked
+            )
+            else -> HeaderHolder(
+                ItemHeaderBinding.inflate(inflater, parent, false).root,
+                onEditTextChanged
+            )
         }
     }
 

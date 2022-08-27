@@ -1,7 +1,5 @@
 package com.sunplacestudio.movieapplication.fragment.main.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,6 +11,7 @@ import com.sunplacestudio.movieapplication.utils.NetworkUtils
 import com.sunplacestudio.movieapplication.utils.apicall.MovieApiCall
 import com.sunplacestudio.movieapplication.utils.apicall.json.CategoryMovie
 import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovie
+import com.sunplacestudio.movieapplication.utils.usecase.CurrentMovieUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 
@@ -20,7 +19,8 @@ class MovieFragmentViewModel(
     private val movieRepository: MovieRepository,
     private val movieApiCall: MovieApiCall,
     private val apiHelper: ApiHelper,
-    private val networkUtils: NetworkUtils
+    private val networkUtils: NetworkUtils,
+    private val currentMovieUseCase: CurrentMovieUseCase
 ) : ViewModel() {
 
     private val movieCategoryListLiveData: MutableLiveData<List<MovieCategoryList>> =
@@ -54,6 +54,10 @@ class MovieFragmentViewModel(
             }
         }.subscribe()
         compositeDisposable.add(disposable)
+    }
+
+    fun setCurrentMovie(movie: Movie) {
+        currentMovieUseCase.movie = movie
     }
 
     fun getMovies(): LiveData<List<MovieCategoryList>> {

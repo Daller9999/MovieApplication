@@ -15,7 +15,7 @@
             android:id="@+id/imageCardView"
             android:layout_width="300dp"
             android:layout_height="400dp"
-            android:layout_margin="@dimen/cartview_margin"
+            android:layout_marginTop="40dp"
 
             app:cardCornerRadius="@dimen/poster_image_radius"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -26,7 +26,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:contentDescription="image"
+                android:contentDescription=""
                 android:scaleType="center" />
         </androidx.cardview.widget.CardView>
 
@@ -37,9 +37,36 @@
             android:layout_margin="20dp"
             android:gravity="center"
             android:textColor="@color/colorWhite"
-            android:textSize="20sp"
+            android:textSize="30sp"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/imageCardView"
             tools:text="Фильм" />
+
+        <LinearLayout
+            app:layout_constraintTop_toBottomOf="@id/textViewTitle"
+            app:layout_constraintLeft_toLeftOf="@id/imageCardView"
+            app:layout_constraintRight_toRightOf="@id/imageCardView"
+
+            android:id="@+id/linearStars"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <View
+                style="@style/starsParamsMovie"
+                android:id="@+id/star1"/>
+            <View
+                style="@style/starsParamsMovie"
+                android:id="@+id/star2"/>
+            <View
+                style="@style/starsParamsMovie"
+                android:id="@+id/star3"/>
+            <View
+                style="@style/starsParamsMovie"
+                android:id="@+id/star4"/>
+            <View
+                style="@style/starsParamsMovie"
+                android:id="@+id/star5"/>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textViewOverview"
@@ -53,7 +80,7 @@
             android:textSize="18sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewTitle" />
+            app:layout_constraintTop_toBottomOf="@id/linearStars" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -10,4 +10,10 @@ data class Movie(
     val overview: String,
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null
-)
+) {
+    fun starCount(): Int {
+        val size = 5
+        val count = (voteAverage / 2f).toInt()
+        return if (count >= size) size - 1 else count
+    }
+}

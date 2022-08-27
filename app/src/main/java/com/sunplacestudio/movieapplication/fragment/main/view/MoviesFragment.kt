@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -14,7 +13,6 @@ import com.sunplacestudio.movieapplication.R
 import com.sunplacestudio.movieapplication.databinding.MovieFragmentBinding
 import com.sunplacestudio.movieapplication.fragment.main.view.adapters.MovieCategoryListAdapter
 import com.sunplacestudio.movieapplication.fragment.main.viewmodel.MovieFragmentViewModel
-import com.sunplacestudio.movieapplication.fragment.movie.MovieFragment
 import io.reactivex.Completable
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
@@ -38,10 +36,8 @@ class MoviesFragment : Fragment() {
         val movieCategoryListAdapter = MovieCategoryListAdapter({
             movieFragmentViewModel.searchMovie(it)
         }, {
-            navController.navigate(
-                R.id.action_moviesFragment_to_movieFragment,
-                bundleOf(MovieFragment.MOVIE_ARGS to it)
-            )
+            movieFragmentViewModel.setCurrentMovie(it)
+            navController.navigate(R.id.action_moviesFragment_to_movieFragment)
         })
 
         binding.mainRecyclerMovies.layoutManager = LinearLayoutManager(context)
