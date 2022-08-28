@@ -10,6 +10,7 @@ data class Movie(
     val overview: String,
     val releaseDate: String,
     val runtime: Int,
+    val revenue: Int,
     val productionCompanies: List<ProductionCompany>,
     val genres: List<Genre>,
     @PrimaryKey(autoGenerate = true)
@@ -22,7 +23,7 @@ data class Movie(
     }
 
     companion object {
-        fun empty() = Movie("", "", 0f, -1, "", "", -1, emptyList(), emptyList())
+        fun empty() = Movie("", "", 0f, -1, "", "", -1,-1, emptyList(), emptyList())
     }
 }
 

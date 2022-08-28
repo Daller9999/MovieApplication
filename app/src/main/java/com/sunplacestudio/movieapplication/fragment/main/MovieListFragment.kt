@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sunplacestudio.movieapplication.MainActivity
 import com.sunplacestudio.movieapplication.R
 import com.sunplacestudio.movieapplication.databinding.MovieFragmentBinding
+import com.sunplacestudio.movieapplication.fragment.main.adapters.MovieCategoryListAdapter
 import com.sunplacestudio.movieapplication.fragment.main.models.MovieListEvent
 import com.sunplacestudio.movieapplication.fragment.main.models.MovieListViewState
-import com.sunplacestudio.movieapplication.fragment.main.adapters.MovieCategoryListAdapter
 import com.sunplacestudio.movieapplication.fragment.movie.MovieFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,9 +21,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MoviesFragment : Fragment() {
+class MovieListFragment : Fragment() {
 
-    private val viewModel by viewModel<MovieFragmentViewModel>()
+    private val viewModel by viewModel<MovieListViewModel>()
     private lateinit var binding: MovieFragmentBinding
 
     private val navController by lazy {
@@ -46,7 +46,7 @@ class MoviesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val movieCategoryListAdapter = MovieCategoryListAdapter({
-            viewModel.searchMovie(it)
+            viewModel.obtainEvent(MovieListEvent.OnSearchMovie(it))
         }, {
             navController.navigate(
                 R.id.action_moviesFragment_to_movieFragment,
@@ -67,7 +67,6 @@ class MoviesFragment : Fragment() {
         }
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.sendRequests()
             scopeIO.launch {
                 delay(1500)
                 scopeMain.launch {

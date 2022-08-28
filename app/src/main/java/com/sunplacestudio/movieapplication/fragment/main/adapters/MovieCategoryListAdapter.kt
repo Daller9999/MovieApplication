@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.*
 import com.sunplacestudio.movieapplication.R
+import com.sunplacestudio.movieapplication.data.apicall.json.CategoryMovie
 import com.sunplacestudio.movieapplication.database.repository.Movie
 import com.sunplacestudio.movieapplication.database.repository.MovieCategoryList
 import com.sunplacestudio.movieapplication.databinding.ItemCategoryMovieBinding
 import com.sunplacestudio.movieapplication.databinding.ItemHeaderBinding
-import com.sunplacestudio.movieapplication.utils.apicall.json.CategoryMovie
 
 class MovieCategoryListAdapter(
     private val onEditTextChanged: (string: String) -> Unit,

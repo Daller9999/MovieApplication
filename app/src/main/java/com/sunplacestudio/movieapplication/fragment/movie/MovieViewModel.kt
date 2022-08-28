@@ -1,11 +1,11 @@
 package com.sunplacestudio.movieapplication.fragment.movie
 
 import com.sunplacestudio.movieapplication.core.BaseFlowViewModel
+import com.sunplacestudio.movieapplication.data.apicall.MovieApiCall
 import com.sunplacestudio.movieapplication.database.repository.Movie
 import com.sunplacestudio.movieapplication.fragment.movie.models.MovieEvent
 import com.sunplacestudio.movieapplication.fragment.movie.models.MovieViewState
 import com.sunplacestudio.movieapplication.utils.ApiHelper
-import com.sunplacestudio.movieapplication.utils.apicall.MovieApiCall
 import com.sunplacestudio.movieapplication.utils.toMovie
 import kotlinx.coroutines.launch
 

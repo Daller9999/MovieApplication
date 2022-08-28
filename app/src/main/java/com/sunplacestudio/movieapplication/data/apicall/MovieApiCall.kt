@@ -1,15 +1,14 @@
-package com.sunplacestudio.movieapplication.utils.apicall
+package com.sunplacestudio.movieapplication.data.apicall
 
+import com.sunplacestudio.movieapplication.data.apicall.json.movie.JsonMovie
+import com.sunplacestudio.movieapplication.data.apicall.json.movie.JsonMovieData
 import com.sunplacestudio.movieapplication.utils.ApiHelper
-import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovie
-import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovieData
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import java.lang.reflect.Method
 
 class MovieApiCall(
     private val apiKeyHelper: ApiHelper

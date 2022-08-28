@@ -1,7 +1,7 @@
 package com.sunplacestudio.movieapplication
 
 import androidx.test.platform.app.InstrumentationRegistry
-import com.sunplacestudio.movieapplication.utils.apicall.MovieApiCall
+import com.sunplacestudio.movieapplication.data.apicall.MovieApiCall
 import org.junit.Test
 
 import org.junit.Assert.*

@@ -6,11 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import com.sunplacestudio.movieapplication.database.repository.Movie
-import com.sunplacestudio.movieapplication.databinding.MovieCurrentFragmentBinding
-import com.sunplacestudio.movieapplication.fragment.movie.models.MovieViewState
 import com.sunplacestudio.movieapplication.fragment.movie.view.MovieView
-import com.sunplacestudio.movieapplication.utils.loadImage
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieFragment : Fragment() {

@@ -2,15 +2,15 @@ package com.sunplacestudio.movieapplication.utils
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.sunplacestudio.movieapplication.data.apicall.json.CategoryMovie
+import com.sunplacestudio.movieapplication.data.apicall.json.movie.JsonGenre
+import com.sunplacestudio.movieapplication.data.apicall.json.movie.JsonMovie
+import com.sunplacestudio.movieapplication.data.apicall.json.movie.JsonMovieData
+import com.sunplacestudio.movieapplication.data.apicall.json.movie.JsonProductionCompany
 import com.sunplacestudio.movieapplication.database.repository.Genre
 import com.sunplacestudio.movieapplication.database.repository.Movie
 import com.sunplacestudio.movieapplication.database.repository.MovieCategoryList
 import com.sunplacestudio.movieapplication.database.repository.ProductionCompany
-import com.sunplacestudio.movieapplication.utils.apicall.json.CategoryMovie
-import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonGenre
-import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovie
-import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovieData
-import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonProductionCompany
 
 fun ImageView.loadImage(url: String) {
     Glide.with(this).load(url).into(this)
@@ -30,6 +30,7 @@ fun JsonMovieData.toMovie(apiHelper: ApiHelper) = Movie(
     overview = movieOverview,
     releaseDate = releaseDate,
     runtime = movieRuntime,
+    revenue = movieRevenue,
     productionCompanies = productionCompanies.toListProductionCompany(),
     genres = genresMovie.toListGenre()
 )

@@ -1,4 +1,4 @@
-package com.sunplacestudio.movieapplication.utils.apicall.json.movie
+package com.sunplacestudio.movieapplication.data.apicall.json.movie
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -30,7 +30,7 @@ data class JsonMovieData(
         fun empty() = JsonMovieData("", 0f, -1, "", "", "", -1, -1, emptyList(), emptyList())
     }
 
-    val movieRevenue = _revenue
+    val movieRevenue = _revenue ?: -1
     val movieTitle = _title ?: ""
     val voteAverage = _voteAverage ?: -1f
     val ID = _id ?: -1

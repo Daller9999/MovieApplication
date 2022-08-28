@@ -1,5 +1,6 @@
 package com.sunplacestudio.movieapplication.fragment.movie.view
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -7,9 +8,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -36,6 +41,7 @@ fun MovieView(viewModel: MovieViewModel) {
 
 @Composable
 private fun MovieScreen(movie: Movie) {
+    val isLoaded = remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .background(color = colorResource(id = R.color.colorDark))
@@ -55,11 +61,31 @@ private fun MovieScreen(movie: Movie) {
                         .data(movie.posterUrl)
                         .crossfade(true)
                         .build(),
+                    onSuccess = {
+                        isLoaded.value = true
+                        Log.i("test_app", "true2")
+                    },
+                    onError = {
+                        isLoaded.value = true
+                        Log.i("test_app", "true3")
+                    },
                     placeholder = painterResource(id = R.drawable.ic_launcher_foreground),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
+                if (!isLoaded.value) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(150.dp),
+                            color = colorResource(id = R.color.colorPrimary),
+                            strokeWidth = 10.dp
+                        )
+                    }
+                }
             }
         }
         Text(
@@ -87,6 +113,7 @@ private fun MovieScreen(movie: Movie) {
         }
         InfoItem(info = stringResource(id = R.string.Release), text = movie.releaseDate)
         InfoItem(info = stringResource(id = R.string.Runtime), text = movie.runtime.toString())
+        InfoItem(info = stringResource(id = R.string.Revenue), text = movie.revenue.toString())
         Text(
             text = movie.overview,
             textAlign = TextAlign.Center,

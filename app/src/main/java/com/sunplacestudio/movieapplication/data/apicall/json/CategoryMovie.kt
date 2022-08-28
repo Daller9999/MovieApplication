@@ -1,4 +1,4 @@
-package com.sunplacestudio.movieapplication.utils.apicall.json
+package com.sunplacestudio.movieapplication.data.apicall.json
 
 enum class CategoryMovie {
     RECOMMENDED,

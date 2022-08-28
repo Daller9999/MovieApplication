@@ -10,4 +10,5 @@
     <string name="Release">Release</string>
     <string name="Runtime">Runtime</string>
     <string name="Country">County</string>
+    <string name="Revenue">Revenue</string>
 </resources>

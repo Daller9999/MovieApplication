@@ -2,7 +2,7 @@ package com.sunplacestudio.movieapplication
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.sunplacestudio.movieapplication.utils.apicall.MovieApiCall
+import com.sunplacestudio.movieapplication.data.apicall.MovieApiCall
 
 import org.junit.Test
 import org.junit.runner.RunWith

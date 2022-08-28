@@ -1,4 +1,4 @@
-package com.sunplacestudio.movieapplication.utils.apicall.json.movie
+package com.sunplacestudio.movieapplication.data.apicall.json.movie
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
