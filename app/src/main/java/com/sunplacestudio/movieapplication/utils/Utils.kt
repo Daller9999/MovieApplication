@@ -14,13 +14,13 @@ fun ImageView.loadImage(url: String) {
 fun JsonMovie.toMovieData(apiHelper: ApiHelper, category: CategoryMovie): MovieCategoryList {
     val arrayList = ArrayList<Movie>()
     var movieData: Movie
-    for (jsonMovieData in results) {
+    for (jsonMovieData in resultList) {
         movieData = Movie(
-            jsonMovieData.title,
-            apiHelper.getImageUrl() + jsonMovieData.poster_path,
-            jsonMovieData.vote_average,
-            jsonMovieData.id,
-            jsonMovieData.overview
+            jsonMovieData.movieTitle,
+            apiHelper.getImageUrl() + jsonMovieData.posterPath,
+            jsonMovieData.voteAverage,
+            jsonMovieData.ID,
+            jsonMovieData.movieOverview
         )
         arrayList.add(movieData)
     }

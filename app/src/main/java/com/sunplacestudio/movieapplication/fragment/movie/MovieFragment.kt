@@ -5,10 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
 import com.sunplacestudio.movieapplication.databinding.MovieCurrentFragmentBinding
 import com.sunplacestudio.movieapplication.utils.loadImage
-import kotlinx.android.synthetic.main.item_category_current_movie.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieFragment : Fragment() {
@@ -32,15 +30,16 @@ class MovieFragment : Fragment() {
                 imageView.loadImage(it.posterUrl)
                 textViewTitle.text = it.name
                 textViewOverview.text = it.overview
-            }
-            val mas = listOf(star1, star2, star3, star4, star5)
-            val count = it.starCount()
-            for (i in 0..count) {
-                mas[i].isActivated = true
-            }
-            if (count < 4) {
-                for (i in count until mas.size) {
-                    mas[i].isActivated = false
+
+                val mas = listOf(star1, star2, star3, star4, star5)
+                val count = it.starCount()
+                for (i in 0..count) {
+                    mas[i].isActivated = true
+                }
+                if (count < 4) {
+                    for (i in count until mas.size) {
+                        mas[i].isActivated = false
+                    }
                 }
             }
         }

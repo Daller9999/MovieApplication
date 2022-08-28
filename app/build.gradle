@@ -1,7 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlinx-serialization'
 
 android {
     compileSdkVersion 33
@@ -51,13 +52,12 @@ dependencies {
 
     // DataBase
     implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-rxjava2:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
-    // Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
+    // Ktor
+    implementation("io.ktor:ktor-client-android:$ktorVersion")
+    implementation("io.ktor:ktor-client-json:$ktorVersion")
+    implementation("io.ktor:ktor-client-serialization:$kotlinxSerializationVersion")
 
     //noinspection GradleCompatible
     implementation 'com.android.support:design:28.0.0'
@@ -70,10 +70,9 @@ dependencies {
     // load images
     implementation 'com.github.bumptech.glide:glide:4.12.0'
 
-    // RxJava
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
-    implementation "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
+    // Kotlin coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$corotunes_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$corotunes_version"
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 }

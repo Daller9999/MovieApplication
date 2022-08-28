@@ -2,47 +2,34 @@ package com.sunplacestudio.movieapplication.database.repository
 
 import com.sunplacestudio.movieapplication.database.room.MovieDao
 import com.sunplacestudio.movieapplication.database.room.MovieEntity
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MovieRepository(
     private val movieDao: MovieDao
 ) {
+    private val dispatcher = Dispatchers.IO
+    private val scopeIO = CoroutineScope(dispatcher)
 
-    private val ioScheduler = Schedulers.io()
-
-    fun getMoviesLiveData(): Flowable<List<MovieCategoryList>> {
-        return movieDao.getMoviesLiveData().subscribeOn(ioScheduler).flatMap {
-            val array: ArrayList<MovieCategoryList> = ArrayList()
-            for (movieEntity in it) {
-                array.add(convertToMovie(movieEntity))
-            }
-            return@flatMap Flowable.fromArray(array)
-        }
+    suspend fun getMoviesLiveData(): List<MovieCategoryList> = withContext(dispatcher) {
+        movieDao.getMoviesLiveData().map { it.toMovieCategoryList() }
     }
 
-    private fun convertToMovie(movieEntity: MovieEntity): MovieCategoryList {
-        return MovieCategoryList(movieEntity.nameCategory, movieEntity.listMovies)
+    private fun MovieEntity.toMovieCategoryList(): MovieCategoryList {
+        return MovieCategoryList(nameCategory, listMovies)
     }
 
-    fun getMovies(): Single<List<MovieCategoryList>> {
-        return Single.fromCallable {
-            movieDao.getMovies().map { convertToMovie(it) }
-        }.subscribeOn(ioScheduler)
+    suspend fun getMovies(): List<MovieCategoryList> = withContext(dispatcher) {
+        movieDao.getMovies().map { it.toMovieCategoryList() }
     }
 
-    fun addMovies(movie: MovieCategoryList): Completable {
-        return Completable.fromCallable {
-            movieDao.addMovies(MovieEntity(movie.category, movie.list))
-        }.subscribeOn(ioScheduler)
+    fun addMovies(movie: MovieCategoryList) = scopeIO.launch {
+        movieDao.addMovies(MovieEntity(movie.category, movie.list))
     }
 
-    fun clear(): Completable {
-        return Completable.fromCallable {
-            movieDao.clear()
-        }.subscribeOn(ioScheduler)
+    fun clear() = scopeIO.launch {
+        movieDao.clear()
     }
-
 }

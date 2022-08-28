@@ -12,7 +12,7 @@ import com.sunplacestudio.movieapplication.utils.usecase.CurrentMovieUseCase
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    factory { MovieFragmentViewModel(get(), get(), get(), get(), get()) }
+    factory { MovieFragmentViewModel(get(), get(), get(), get(), get(), get()) }
     factory { MovieViewModel(get()) }
 }
 
@@ -34,7 +34,7 @@ val networkModule = module {
 
     single { NetworkUtils(get()) }
 
-    single { MovieApiCall(get(), get()) }
+    single { MovieApiCall(get()) }
 
 }
 

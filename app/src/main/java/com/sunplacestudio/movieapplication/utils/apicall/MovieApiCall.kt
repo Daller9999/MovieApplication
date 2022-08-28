@@ -1,85 +1,90 @@
 package com.sunplacestudio.movieapplication.utils.apicall
 
-import android.content.Context
-import com.sunplacestudio.movieapplication.R
+import com.google.gson.GsonBuilder
 import com.sunplacestudio.movieapplication.utils.ApiHelper
 import com.sunplacestudio.movieapplication.utils.apicall.json.CategoryMovie
 import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovie
-import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovieData
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
-import java.util.concurrent.TimeUnit
+import io.ktor.client.*
+import io.ktor.client.features.*
+import io.ktor.client.features.json.*
+import io.ktor.client.features.json.serializer.*
+import io.ktor.client.request.*
+import io.ktor.http.*
 
 class MovieApiCall(
-    context: Context,
     private val apiKeyHelper: ApiHelper
 ) {
 
-    private val serverBaseUrl = "https://api.themoviedb.org"
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(serverBaseUrl)
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    companion object {
+        private const val BASE_URL = "https://api.themoviedb.org"
+        private const val LAN = "en-US"
+    }
 
-    private val apiService = retrofit.create(ApiCall::class.java)
-    private val ioScheduler = Schedulers.io()
+    private val client = HttpClient {
+        install(JsonFeature) {
+            serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
+                prettyPrint = true
+                isLenient = true
+                ignoreUnknownKeys = true
+            })
+        }
+    }
 
-    private val nothingFound = context.resources.getString(R.string.not_found)
-
-    fun requestMovieData(onRequestMovies: (jsonMovie: JsonMovie, categoryMovie: CategoryMovie) -> Unit) {
-        apiService
-            .sendRequestPopular(apiKeyHelper.getApiKey())
-            .onErrorReturn { JsonMovie(listOf()) }
-            .doOnError { it.printStackTrace() }
-            .delay(250, TimeUnit.MILLISECONDS)
-            .flatMap {
-                onRequestMovies(it, CategoryMovie.RECOMMENDED)
-                return@flatMap apiService.sendRequestNowPlaying(apiKeyHelper.getApiKey())
+    init {
+        client.config {
+            expectSuccess = true
+            defaultRequest {
+                host = BASE_URL
             }
-            .onErrorReturn { JsonMovie(listOf()) }
-            .doOnError { it.printStackTrace() }
-            .map { onRequestMovies(it, CategoryMovie.POPULAR) }
-            .subscribeOn(ioScheduler)
-            .subscribe()
+        }
+    }
+
+    suspend fun requestPopularMovie(page: Int): JsonMovie {
+        val url = "$BASE_URL/3/movie/popular?language=$LAN&page=1"
+        return client.request(url) {
+            method = HttpMethod.Get
+            parameter("api_key", apiKeyHelper.getApiKey())
+            parameter("page", page)
+        }
+    }
+
+    suspend fun requestNowPlayingMovie(page: Int): JsonMovie {
+        val url = "$BASE_URL/3/movie/now_playing?language=$LAN&page=1"
+        return client.request(url) {
+            method = HttpMethod.Get
+            parameter("api_key", apiKeyHelper.getApiKey())
+            parameter("page", page)
+        }
     }
 
 
-    fun searchMovie(string: String, onSearchOver: (jsonMovie: JsonMovie) -> Unit) {
-        apiService
-            .searchMovie(apiKeyHelper.getApiKey(), string)
-            .onErrorReturn { JsonMovie(listOf(JsonMovieData.empty())) }
-            .delay(250, TimeUnit.MILLISECONDS)
-            .doOnNext {
-                onSearchOver(it)
-            }
-            .subscribeOn(ioScheduler)
-            .subscribe()
+    suspend fun searchMovie(string: String): JsonMovie {
+        val url = "$BASE_URL/3/search/movie?language=$LAN&page=1&include_adult=true"
+        return client.request(url) {
+            method = HttpMethod.Get
+            parameter("api_key", apiKeyHelper.getApiKey())
+            parameter("query", string)
+        }
     }
-    
-    private interface ApiCall {
-        @GET("3/movie/popular?language=en-US&page=1")
-        fun sendRequestPopular(@Query("api_key") key: String): Observable<JsonMovie>
 
-        @GET("3/movie/now_playing?language=en-US")
-        fun sendRequestNowPlaying(@Query("api_key") key: String): Observable<JsonMovie>
+//    private interface ApiCall {
+//        @GET("3/movie/popular?language=en-US&page=1")
+//        fun sendRequestPopular(@Query("api_key") key: String): Observable<JsonMovie>
+//
+//        @GET("3/movie/now_playing?language=en-US")
+//        fun sendRequestNowPlaying(@Query("api_key") key: String): Observable<JsonMovie>
+//
+//        @GET("3/movie/{movie_id}?language=en-US")
+//        fun getMovieDetails(
+//            @Query("api_key") key: String,
+//            @Path("movie_id") id: Int
+//        ): Observable<JsonMovie>
+//
+//        @GET("3/search/movie?language=en-US&page=1&include_adult=true")
+//        fun searchMovie(
+//            @Query("api_key") key: String,
+//            @Query("query") search: String
+//        ): Observable<JsonMovie>
+//    }
 
-        @GET("3/movie/{movie_id}?language=en-US")
-        fun getMovieDetails(
-            @Query("api_key") key: String,
-            @Path("movie_id") id: Int
-        ): Observable<JsonMovie>
-
-        @GET("3/search/movie?language=en-US&page=1&include_adult=true")
-        fun searchMovie(
-            @Query("api_key") key: String,
-            @Query("query") search: String
-        ): Observable<JsonMovie>
-    }
 }

@@ -1,87 +1,72 @@
 package com.sunplacestudio.movieapplication.fragment.main.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import com.sunplacestudio.movieapplication.core.BaseViewModel
 import com.sunplacestudio.movieapplication.database.repository.Movie
 import com.sunplacestudio.movieapplication.database.repository.MovieCategoryList
 import com.sunplacestudio.movieapplication.database.repository.MovieRepository
+import com.sunplacestudio.movieapplication.fragment.main.models.MovieEvent
+import com.sunplacestudio.movieapplication.fragment.main.models.MovieViewState
 import com.sunplacestudio.movieapplication.utils.ApiHelper
 import com.sunplacestudio.movieapplication.utils.NetworkUtils
 import com.sunplacestudio.movieapplication.utils.apicall.MovieApiCall
 import com.sunplacestudio.movieapplication.utils.apicall.json.CategoryMovie
-import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovie
 import com.sunplacestudio.movieapplication.utils.toMovieData
 import com.sunplacestudio.movieapplication.utils.usecase.CurrentMovieUseCase
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.launch
 
 class MovieFragmentViewModel(
+    application: Application,
     private val movieRepository: MovieRepository,
     private val movieApiCall: MovieApiCall,
     private val apiHelper: ApiHelper,
     private val networkUtils: NetworkUtils,
     private val currentMovieUseCase: CurrentMovieUseCase
-) : ViewModel() {
+) : BaseViewModel<MovieViewState, MovieEvent>(application) {
 
-    private val movieCategoryListLiveData: MutableLiveData<List<MovieCategoryList>> =
-        MutableLiveData()
-    private val compositeDisposable = CompositeDisposable()
-
-    init {
+    private fun init() = scopeIO.launch {
         sendRequests()
-
-        var disposable = movieRepository.getMovies()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { list -> movieCategoryListLiveData.value = list }
-        compositeDisposable.add(disposable)
-
-        disposable = movieRepository.getMoviesLiveData()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { movieCategoryListLiveData.value = it }
-        compositeDisposable.add(disposable)
+        val list = movieRepository.getMovies()
+        viewState = MovieViewState.OnUploadMovie(list)
     }
 
-    fun sendRequests() {
-        if (!networkUtils.isConnected()) return
-
-        val disposable = movieRepository.clear().doOnComplete {
-            movieApiCall.requestMovieData { jsonMovie, categoryMovie ->
-                compositeDisposable.add(
-                    movieRepository.addMovies(
-                        jsonMovie.toMovieData(apiHelper, categoryMovie)
-                    ).subscribe()
-                )
-            }
-        }.subscribe()
-        compositeDisposable.add(disposable)
+    fun sendRequests() = scopeIO.launch {
+        if (!networkUtils.isConnected()) return@launch
+        val listCategory = arrayListOf<MovieCategoryList>()
+        listCategory.add(
+            movieApiCall.requestNowPlayingMovie(1).toMovieData(
+                apiHelper, CategoryMovie.RECOMMENDED
+            )
+        )
+        listCategory.add(
+            movieApiCall.requestPopularMovie(1).toMovieData(
+                apiHelper, CategoryMovie.POPULAR
+            )
+        )
+        viewState = MovieViewState.OnUploadMovie(listCategory)
     }
 
     fun setCurrentMovie(movie: Movie) {
         currentMovieUseCase.movie = movie
     }
 
-    fun getMovies(): LiveData<List<MovieCategoryList>> {
-        return movieCategoryListLiveData
-    }
-
-    fun searchMovie(string: String) {
-        if (!networkUtils.isConnected()) return
-
+    fun searchMovie(string: String) = scopeIO.launch {
+        if (!networkUtils.isConnected()) return@launch
         if (string.isNotEmpty()) {
-            movieApiCall.searchMovie(string) {
-                val listMovieCategoryList = listOf(it.toMovieData(apiHelper, CategoryMovie.FOUND))
-                movieCategoryListLiveData.postValue(listMovieCategoryList)
-            }
+            val list = movieApiCall.searchMovie(string).toMovieData(apiHelper, CategoryMovie.FOUND)
+            viewState = MovieViewState.OnUploadMovie(listOf(list))
         } else {
             sendRequests()
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.clear()
-        compositeDisposable.dispose()
+    override fun obtainEvent(viewEvent: MovieEvent) {
+        when (viewEvent) {
+            is MovieEvent.OnStartUI -> init()
+            is MovieEvent.OnSelectMovie -> setCurrentMovie(viewEvent.movie)
+            MovieEvent.OnStopUI -> {}
+            is MovieEvent.OnSearchMovie -> searchMovie(viewEvent.string)
+        }
     }
 
 }
