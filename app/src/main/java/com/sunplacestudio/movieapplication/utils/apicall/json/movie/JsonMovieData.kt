@@ -17,6 +17,8 @@ data class JsonMovieData(
     private val _posterPath: String? = null,
     @SerialName("release_date")
     private val _releaseDate: String? = null,
+    @SerialName("revenue")
+    private val _revenue: Int? = null,
     @SerialName("runtime")
     private val _runtime: Int? = null,
     @SerialName("production_companies")
@@ -28,6 +30,7 @@ data class JsonMovieData(
         fun empty() = JsonMovieData("", 0f, -1, "", "", "", -1, emptyList(), emptyList())
     }
 
+    val movieRevenue = _revenue
     val movieTitle = _title ?: ""
     val voteAverage = _voteAverage ?: -1f
     val ID = _id ?: -1
