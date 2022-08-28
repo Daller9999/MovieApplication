@@ -12,6 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
@@ -53,7 +54,7 @@ class MovieApiCall(
     fun searchMovie(string: String, onSearchOver: (jsonMovie: JsonMovie) -> Unit) {
         apiService
             .searchMovie(apiKeyHelper.getApiKey(), string)
-            .onErrorReturn { JsonMovie(listOf(JsonMovieData(nothingFound, 0f, -1, "", ""))) }
+            .onErrorReturn { JsonMovie(listOf(JsonMovieData.empty())) }
             .delay(250, TimeUnit.MILLISECONDS)
             .doOnNext {
                 onSearchOver(it)
@@ -61,13 +62,19 @@ class MovieApiCall(
             .subscribeOn(ioScheduler)
             .subscribe()
     }
-
+    
     private interface ApiCall {
         @GET("3/movie/popular?language=en-US&page=1")
         fun sendRequestPopular(@Query("api_key") key: String): Observable<JsonMovie>
 
         @GET("3/movie/now_playing?language=en-US")
         fun sendRequestNowPlaying(@Query("api_key") key: String): Observable<JsonMovie>
+
+        @GET("3/movie/{movie_id}?language=en-US")
+        fun getMovieDetails(
+            @Query("api_key") key: String,
+            @Path("movie_id") id: Int
+        ): Observable<JsonMovie>
 
         @GET("3/search/movie?language=en-US&page=1&include_adult=true")
         fun searchMovie(

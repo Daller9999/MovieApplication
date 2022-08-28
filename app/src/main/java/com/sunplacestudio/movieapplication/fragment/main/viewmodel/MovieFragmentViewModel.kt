@@ -11,6 +11,7 @@ import com.sunplacestudio.movieapplication.utils.NetworkUtils
 import com.sunplacestudio.movieapplication.utils.apicall.MovieApiCall
 import com.sunplacestudio.movieapplication.utils.apicall.json.CategoryMovie
 import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovie
+import com.sunplacestudio.movieapplication.utils.toMovieData
 import com.sunplacestudio.movieapplication.utils.usecase.CurrentMovieUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -48,7 +49,7 @@ class MovieFragmentViewModel(
             movieApiCall.requestMovieData { jsonMovie, categoryMovie ->
                 compositeDisposable.add(
                     movieRepository.addMovies(
-                        convertJsonMovieToMovieCategoryList(jsonMovie, categoryMovie)
+                        jsonMovie.toMovieData(apiHelper, categoryMovie)
                     ).subscribe()
                 )
             }
@@ -69,32 +70,12 @@ class MovieFragmentViewModel(
 
         if (string.isNotEmpty()) {
             movieApiCall.searchMovie(string) {
-                val listMovieCategoryList =
-                    listOf(convertJsonMovieToMovieCategoryList(it, CategoryMovie.FOUND))
+                val listMovieCategoryList = listOf(it.toMovieData(apiHelper, CategoryMovie.FOUND))
                 movieCategoryListLiveData.postValue(listMovieCategoryList)
             }
         } else {
             sendRequests()
         }
-    }
-
-    private fun convertJsonMovieToMovieCategoryList(
-        jsonMovie: JsonMovie,
-        categoryMovie: CategoryMovie
-    ): MovieCategoryList {
-        val arrayList = ArrayList<Movie>()
-        var movieData: Movie
-        for (jsonMovieData in jsonMovie.results) {
-            movieData = Movie(
-                jsonMovieData.title,
-                apiHelper.getImageUrl() + jsonMovieData.poster_path,
-                jsonMovieData.vote_average,
-                jsonMovieData.id,
-                jsonMovieData.overview
-            )
-            arrayList.add(movieData)
-        }
-        return MovieCategoryList(categoryMovie.ordinal, arrayList)
     }
 
     override fun onCleared() {

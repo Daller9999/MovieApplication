@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.sunplacestudio.movieapplication.databinding.MovieCurrentFragmentBinding
+import com.sunplacestudio.movieapplication.utils.loadImage
 import kotlinx.android.synthetic.main.item_category_current_movie.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -28,7 +29,7 @@ class MovieFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         movieViewModel.movie.observe(viewLifecycleOwner) {
             with(binding) {
-                Glide.with(imageView).load(it.posterUrl).into(imageView)
+                imageView.loadImage(it.posterUrl)
                 textViewTitle.text = it.name
                 textViewOverview.text = it.overview
             }
