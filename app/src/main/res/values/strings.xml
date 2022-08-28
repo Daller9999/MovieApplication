@@ -7,4 +7,7 @@
     <string name="any">Any…</string>
     <string name="not_found">Nothing found</string>
     <string name="movie_found">Movies found</string>
+    <string name="Release">Release</string>
+    <string name="Runtime">Runtime</string>
+    <string name="Country">County</string>
 </resources>
