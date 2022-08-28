@@ -6,6 +6,7 @@ import com.sunplacestudio.movieapplication.database.repository.Movie
 import com.sunplacestudio.movieapplication.database.repository.MovieCategoryList
 import com.sunplacestudio.movieapplication.utils.apicall.json.CategoryMovie
 import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovie
+import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovieData
 
 fun ImageView.loadImage(url: String) {
     Glide.with(this).load(url).into(this)
@@ -26,3 +27,11 @@ fun JsonMovie.toMovieData(apiHelper: ApiHelper, category: CategoryMovie): MovieC
     }
     return MovieCategoryList(category.ordinal, arrayList)
 }
+
+fun JsonMovieData.toMovie(apiHelper: ApiHelper) = Movie(
+    movieTitle,
+    apiHelper.getImageUrl() + posterPath,
+    voteAverage,
+    ID,
+    movieOverview
+)

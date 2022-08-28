@@ -1,15 +1,15 @@
 package com.sunplacestudio.movieapplication.utils.apicall
 
-import com.google.gson.GsonBuilder
 import com.sunplacestudio.movieapplication.utils.ApiHelper
-import com.sunplacestudio.movieapplication.utils.apicall.json.CategoryMovie
 import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovie
+import com.sunplacestudio.movieapplication.utils.apicall.json.movie.JsonMovieData
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import java.lang.reflect.Method
 
 class MovieApiCall(
     private val apiKeyHelper: ApiHelper
@@ -45,6 +45,7 @@ class MovieApiCall(
             method = HttpMethod.Get
             parameter("api_key", apiKeyHelper.getApiKey())
             parameter("page", page)
+            parameter("language", LAN)
         }
     }
 
@@ -54,9 +55,9 @@ class MovieApiCall(
             method = HttpMethod.Get
             parameter("api_key", apiKeyHelper.getApiKey())
             parameter("page", page)
+            parameter("language", LAN)
         }
     }
-
 
     suspend fun searchMovie(string: String): JsonMovie {
         val url = "$BASE_URL/3/search/movie?language=$LAN&page=1&include_adult=true"
@@ -64,27 +65,17 @@ class MovieApiCall(
             method = HttpMethod.Get
             parameter("api_key", apiKeyHelper.getApiKey())
             parameter("query", string)
+            parameter("language", LAN)
         }
     }
 
-//    private interface ApiCall {
-//        @GET("3/movie/popular?language=en-US&page=1")
-//        fun sendRequestPopular(@Query("api_key") key: String): Observable<JsonMovie>
-//
-//        @GET("3/movie/now_playing?language=en-US")
-//        fun sendRequestNowPlaying(@Query("api_key") key: String): Observable<JsonMovie>
-//
-//        @GET("3/movie/{movie_id}?language=en-US")
-//        fun getMovieDetails(
-//            @Query("api_key") key: String,
-//            @Path("movie_id") id: Int
-//        ): Observable<JsonMovie>
-//
-//        @GET("3/search/movie?language=en-US&page=1&include_adult=true")
-//        fun searchMovie(
-//            @Query("api_key") key: String,
-//            @Query("query") search: String
-//        ): Observable<JsonMovie>
-//    }
+    suspend fun getMovieDetails(id: Int): JsonMovieData {
+        val url = "$BASE_URL/3/movie/$id"
+        return client.request(url) {
+            method = HttpMethod.Get
+            parameter("api_key", apiKeyHelper.getApiKey())
+            parameter("language", LAN)
+        }
+    }
 
 }

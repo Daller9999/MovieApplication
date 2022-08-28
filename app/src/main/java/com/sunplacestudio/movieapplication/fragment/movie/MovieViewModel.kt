@@ -1,21 +1,28 @@
 package com.sunplacestudio.movieapplication.fragment.movie
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.sunplacestudio.movieapplication.database.repository.Movie
-import com.sunplacestudio.movieapplication.utils.usecase.CurrentMovieUseCase
+import android.app.Application
+import com.sunplacestudio.movieapplication.core.BaseViewModel
+import com.sunplacestudio.movieapplication.fragment.movie.models.MovieEvent
+import com.sunplacestudio.movieapplication.fragment.movie.models.MovieViewState
+import com.sunplacestudio.movieapplication.utils.ApiHelper
+import com.sunplacestudio.movieapplication.utils.apicall.MovieApiCall
+import com.sunplacestudio.movieapplication.utils.toMovie
+import kotlinx.coroutines.launch
 
 class MovieViewModel(
-    private val currentMovieUseCase: CurrentMovieUseCase
-) : ViewModel() {
+    application: Application,
+    private val apiHelper: ApiHelper,
+    private val movieApiCall: MovieApiCall
+) : BaseViewModel<MovieViewState, MovieEvent>(application) {
 
-    private val _movie: MutableLiveData<Movie> = MutableLiveData()
-    val movie: LiveData<Movie> = _movie
+    fun uploadMovie(id: Int) = scopeIO.launch {
+        val info = movieApiCall.getMovieDetails(id)
+        viewState = MovieViewState.OnUploadMovie(info.toMovie(apiHelper))
+    }
 
-    fun uploadMovie() {
-        currentMovieUseCase.movie?.let {
-            _movie.postValue(it)
+    override fun obtainEvent(viewEvent: MovieEvent) {
+        when (viewEvent) {
+            is MovieEvent.OnSetMovie -> uploadMovie(viewEvent.id)
         }
     }
 }

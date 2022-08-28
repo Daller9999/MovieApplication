@@ -8,7 +8,7 @@
     app:startDestination="@id/moviesFragment">
     <fragment
         android:id="@+id/moviesFragment"
-        android:name="com.sunplacestudio.movieapplication.fragment.main.view.MoviesFragment"
+        android:name="com.sunplacestudio.movieapplication.fragment.main.MoviesFragment"
         android:label="MoviesFragment" >
         <action
             android:id="@+id/action_moviesFragment_to_movieFragment"

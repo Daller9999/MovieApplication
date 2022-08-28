@@ -1,4 +1,4 @@
-package com.sunplacestudio.movieapplication.fragment.main.view.adapters
+package com.sunplacestudio.movieapplication.fragment.main.adapters
 
 import android.view.LayoutInflater
 import android.view.View

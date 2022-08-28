@@ -3,7 +3,7 @@ package com.sunplacestudio.movieapplication.di
 import com.sunplacestudio.movieapplication.database.DataBase
 import com.sunplacestudio.movieapplication.database.repository.MovieRepository
 import com.sunplacestudio.movieapplication.database.room.MovieDao
-import com.sunplacestudio.movieapplication.fragment.main.viewmodel.MovieFragmentViewModel
+import com.sunplacestudio.movieapplication.fragment.main.MovieFragmentViewModel
 import com.sunplacestudio.movieapplication.fragment.movie.MovieViewModel
 import com.sunplacestudio.movieapplication.utils.ApiHelper
 import com.sunplacestudio.movieapplication.utils.NetworkUtils
@@ -13,7 +13,7 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     factory { MovieFragmentViewModel(get(), get(), get(), get(), get(), get()) }
-    factory { MovieViewModel(get()) }
+    factory { MovieViewModel(get(), get(), get()) }
 }
 
 val dataBaseModule = module {

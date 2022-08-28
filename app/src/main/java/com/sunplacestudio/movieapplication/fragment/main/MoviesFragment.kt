@@ -1,19 +1,20 @@
-package com.sunplacestudio.movieapplication.fragment.main.view
+package com.sunplacestudio.movieapplication.fragment.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sunplacestudio.movieapplication.MainActivity
 import com.sunplacestudio.movieapplication.R
 import com.sunplacestudio.movieapplication.databinding.MovieFragmentBinding
-import com.sunplacestudio.movieapplication.fragment.main.models.MovieEvent
-import com.sunplacestudio.movieapplication.fragment.main.models.MovieViewState
-import com.sunplacestudio.movieapplication.fragment.main.view.adapters.MovieCategoryListAdapter
-import com.sunplacestudio.movieapplication.fragment.main.viewmodel.MovieFragmentViewModel
+import com.sunplacestudio.movieapplication.fragment.main.models.MovieListEvent
+import com.sunplacestudio.movieapplication.fragment.main.models.MovieListViewState
+import com.sunplacestudio.movieapplication.fragment.main.adapters.MovieCategoryListAdapter
+import com.sunplacestudio.movieapplication.fragment.movie.MovieFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -47,8 +48,10 @@ class MoviesFragment : Fragment() {
         val movieCategoryListAdapter = MovieCategoryListAdapter({
             viewModel.searchMovie(it)
         }, {
-            viewModel.setCurrentMovie(it)
-            navController.navigate(R.id.action_moviesFragment_to_movieFragment)
+            navController.navigate(
+                R.id.action_moviesFragment_to_movieFragment,
+                bundleOf(MovieFragment.MOVIE_ARGS_ID to it.idMovie)
+            )
         })
 
         binding.mainRecyclerMovies.layoutManager = LinearLayoutManager(context)
@@ -56,7 +59,7 @@ class MoviesFragment : Fragment() {
 
         viewModel.viewStates().observe(viewLifecycleOwner) { state ->
             when (state) {
-                is MovieViewState.OnUploadMovie -> {
+                is MovieListViewState.OnUploadMovie -> {
                     movieCategoryListAdapter.submitList(state.list)
                 }
                 null -> {}
@@ -76,7 +79,7 @@ class MoviesFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.obtainEvent(MovieEvent.OnStartUI)
+        viewModel.obtainEvent(MovieListEvent.OnStartUI)
     }
 
 }
