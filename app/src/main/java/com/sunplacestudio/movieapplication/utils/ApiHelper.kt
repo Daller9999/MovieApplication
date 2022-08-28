@@ -1,8 +1,10 @@
 package com.sunplacestudio.movieapplication.utils
 
+import com.sunplacestudio.movieapplication.BuildConfig
+
 class ApiHelper {
 
-    private val apiKey = "80dad15a6e9fc96df722cc8eb3da927a"
+    private val apiKey = BuildConfig.API_KEY
 
     private val imageUrl = "https://image.tmdb.org/t/p/w500"
 

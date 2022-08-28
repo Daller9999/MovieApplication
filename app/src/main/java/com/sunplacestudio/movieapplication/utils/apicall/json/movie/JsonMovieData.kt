@@ -27,7 +27,7 @@ data class JsonMovieData(
     private val _genres: List<JsonGenre>? = null
 ) {
     companion object {
-        fun empty() = JsonMovieData("", 0f, -1, "", "", "", -1, emptyList(), emptyList())
+        fun empty() = JsonMovieData("", 0f, -1, "", "", "", -1, -1, emptyList(), emptyList())
     }
 
     val movieRevenue = _revenue
