@@ -3,13 +3,14 @@ Test task
 
 This example of my code was made with  
 
-- RxJava 2 
-- Retrofit 2
-- MVVM  
-- ROOM 
+- Ktor Client 
+- Kotlin Coroutines
+- Android Compose
+- MVI with Flow and classic with LiveData  
+- ROOM
 - Koin(DI)
 - RecyclerView
-- Glide
+- Glide and Coil for Compose
 - RefreshLayout
 
 This is example of my code, it's old pet project, that I made for job interview years ago.
