@@ -11,5 +11,5 @@ data class JsonGenre(
     private val _name: String? = null
 ) {
     val ID = _id ?: -1
-    val genre = _name
+    val genre = _name ?: ""
 }

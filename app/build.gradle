@@ -28,8 +28,25 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    viewBinding {
-        enabled = true
+
+    buildFeatures {
+        compose true
+        viewBinding = true
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+//        useIR = true
+    }
+
+//    kapt {
+//        generateStubs true
+//        correctErrorTypes true
+//    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerVersion kotlin_version
     }
 }
 
@@ -73,6 +90,17 @@ dependencies {
     // Kotlin coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$corotunes_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$corotunes_version"
+
+    // Compose
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.compiler:compiler:1.2.0"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling:$compose_version"
+//    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+
+    implementation "io.coil-kt:coil-compose:2.2.0"
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 }

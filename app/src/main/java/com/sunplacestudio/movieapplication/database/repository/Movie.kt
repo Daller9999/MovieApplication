@@ -8,6 +8,10 @@ data class Movie(
     val voteAverage: Float,
     val idMovie: Int,
     val overview: String,
+    val releaseDate: String,
+    val runtime: Int,
+    val productionCompanies: List<ProductionCompany>,
+    val genres: List<Genre>,
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null
 ) {
@@ -16,4 +20,20 @@ data class Movie(
         val count = (voteAverage / 2f).toInt()
         return if (count >= size) size - 1 else count
     }
+
+    companion object {
+        fun empty() = Movie("", "", 0f, -1, "", "", -1, emptyList(), emptyList())
+    }
 }
+
+data class ProductionCompany(
+    val id: Int,
+    val name: String? = null,
+    val logoPath: String? = null,
+    val originCountry: String? = null
+)
+
+data class Genre(
+    val id: Int,
+    val name: String
+)

@@ -13,7 +13,7 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     factory { MovieFragmentViewModel(get(), get(), get(), get(), get(), get()) }
-    factory { MovieViewModel(get(), get(), get()) }
+    factory { MovieViewModel(get(), get()) }
 }
 
 val dataBaseModule = module {
