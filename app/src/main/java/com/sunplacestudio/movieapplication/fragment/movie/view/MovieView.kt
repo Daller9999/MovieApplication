@@ -1,6 +1,7 @@
 package com.sunplacestudio.movieapplication.fragment.movie.view
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -66,7 +67,7 @@ private fun MovieScreen(movie: Movie) {
                     topEnd = 0.dp
                 )
                 Box(
-                    modifier = Modifier.padding(top = 140.dp, start = 23.dp)
+                    modifier = Modifier.padding(top = 140.dp, start = 30.dp)
                 ) {
                     Row(
                         verticalAlignment = Alignment.Bottom
@@ -121,6 +122,7 @@ private fun MovieScreen(movie: Movie) {
                     }
                 }
             }
+            GenreRow(movie = movie)
             Spacer(modifier = Modifier.height(36.dp))
             InfoItem(
                 info = stringResource(id = R.string.Release),
@@ -132,7 +134,15 @@ private fun MovieScreen(movie: Movie) {
             )
             InfoItem(
                 info = stringResource(id = R.string.Revenue),
-                text = "${movie.revenue} $"
+                text = "$ ${movie.formatRevenue()}"
+            )
+            Text(
+                text = stringResource(id = R.string.storyline),
+                textAlign = TextAlign.Start,
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight(700),
+                modifier = Modifier.padding(horizontal = 30.dp, vertical = 30.dp)
             )
             Text(
                 text = movie.overview,
@@ -142,7 +152,7 @@ private fun MovieScreen(movie: Movie) {
                 fontWeight = FontWeight(300),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 30.dp, vertical = 10.dp)
+                    .padding(horizontal = 30.dp)
             )
         }
     }
@@ -151,9 +161,39 @@ private fun MovieScreen(movie: Movie) {
 @Composable
 private fun GenreRow(movie: Movie) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 30.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 30.dp, end = 30.dp, top = 10.dp)
+            .horizontalScroll(rememberScrollState())
     ) {
+        movie.genres.forEach {
+            GenreView(text = it.name)
+            Spacer(modifier = Modifier.width(5.dp))
+        }
+    }
+}
 
+@Composable
+private fun GenreView(text: String) {
+    Card(
+        modifier = Modifier.height(30.dp),
+        shape = RoundedCornerShape(10.dp),
+        backgroundColor = colorResource(id = R.color.colorGenre)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(horizontal = 10.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = text,
+                textAlign = TextAlign.Center,
+                color = Color.White,
+                fontSize = 12.sp,
+                fontWeight = FontWeight(300)
+            )
+        }
     }
 }
 
@@ -212,20 +252,20 @@ private fun ImageLoading(
 @Composable
 private fun InfoItem(info: String, text: String) {
     Row(
-        modifier = Modifier.padding(horizontal = 30.dp, vertical = 5.dp)
+        modifier = Modifier.padding(horizontal = 30.dp, vertical = 2.dp)
     ) {
         Text(
             text = "$info:",
             textAlign = TextAlign.Start,
             color = Color.White,
-            fontSize = 18.sp,
+            fontSize = 15.sp,
             fontWeight = FontWeight(400),
         )
         Text(
             text = text,
             textAlign = TextAlign.Start,
             color = Color.White,
-            fontSize = 18.sp,
+            fontSize = 15.sp,
             fontWeight = FontWeight(400),
             modifier = Modifier.padding(start = 10.dp)
         )

@@ -43,8 +43,21 @@ data class Movie(
         return stringBuilder.toString()
     }
 
+    fun formatRevenue(): String {
+        val stringBuilder = StringBuilder()
+        val string = revenue.toString()
+        string.reversed().withIndex().forEach {
+            stringBuilder.append(it.value)
+            if ((it.index + 1) % 3 == 0 && it.index > 0 && it.index + 1 < string.length) {
+                stringBuilder.append(".")
+            }
+        }
+        return stringBuilder.toString().reversed()
+    }
+
     companion object {
-        fun empty() = Movie("", "", 0f, -1, "", "", "", -1,-1, emptyList(), emptyList(), emptyList())
+        fun empty() =
+            Movie("", "", 0f, -1, "", "", "", -1, -1, emptyList(), emptyList(), emptyList())
     }
 }
 
