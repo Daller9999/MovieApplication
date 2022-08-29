@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.google.accompanist.flowlayout.FlowRow
 import com.sunplacestudio.movieapplication.R
 import com.sunplacestudio.movieapplication.database.repository.Movie
 import com.sunplacestudio.movieapplication.fragment.movie.MovieViewModel
@@ -160,11 +161,10 @@ private fun MovieScreen(movie: Movie) {
 
 @Composable
 private fun GenreRow(movie: Movie) {
-    Row(
+    FlowRow(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 30.dp, end = 30.dp, top = 10.dp)
-            .horizontalScroll(rememberScrollState())
     ) {
         movie.genres.forEach {
             GenreView(text = it.name)
@@ -176,7 +176,7 @@ private fun GenreRow(movie: Movie) {
 @Composable
 private fun GenreView(text: String) {
     Card(
-        modifier = Modifier.height(30.dp),
+        modifier = Modifier.height(35.dp).padding(bottom = 5.dp),
         shape = RoundedCornerShape(10.dp),
         backgroundColor = colorResource(id = R.color.colorGenre)
     ) {
