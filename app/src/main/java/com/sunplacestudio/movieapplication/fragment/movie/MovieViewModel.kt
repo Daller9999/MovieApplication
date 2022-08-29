@@ -15,8 +15,8 @@ class MovieViewModel(
 ) : BaseFlowViewModel<MovieViewState, MovieEvent>(MovieViewState(Movie.empty())) {
 
     fun uploadMovie(id: Int) = scopeIO.launch {
-        val info = movieApiCall.getMovieDetails(id)
-        update { it.copy(movie = info.toMovie(apiHelper)) }
+        val info = movieApiCall.getMovieDetails(id).toMovie(apiHelper)
+        update { it.copy(movie = info) }
     }
 
     override fun obtainEvent(viewEvent: MovieEvent) {

@@ -5,12 +5,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class JsonGenre(
-    @SerialName("id")
-    private val _id: Int? = null,
+data class JsonProductionCountry(
     @SerialName("name")
     private val _name: String? = null
 ) {
-    val ID = _id.orNull()
-    val genre = _name.orNull()
+    val countyName = _name.orNull()
 }

@@ -11,4 +11,8 @@
     <string name="Runtime">Runtime</string>
     <string name="Country">County</string>
     <string name="Revenue">Revenue</string>
+    <string name="Year">year</string>
+    <string name="counties">Countries</string>
+    <string name="h">h</string>
+    <string name="min">min</string>
 </resources>

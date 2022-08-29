@@ -1,5 +1,6 @@
 package com.sunplacestudio.movieapplication.data.apicall.json.movie
 
+import com.sunplacestudio.movieapplication.utils.orNull
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -14,8 +15,8 @@ data class JsonProductionCompany(
     @SerialName("origin_country")
     private val _originCountry: String? = null
 ) {
-    val ID = _id ?: -1
-    val movieName = _name ?: ""
-    val logoPath = _logoPath ?: ""
-    val originCountry = _originCountry ?: ""
+    val ID = _id.orNull()
+    val movieName = _name.orNull()
+    val logoPath = _logoPath.orNull()
+    val originCountry = _originCountry.orNull()
 }

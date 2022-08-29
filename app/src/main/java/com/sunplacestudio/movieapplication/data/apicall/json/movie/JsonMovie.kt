@@ -1,5 +1,6 @@
 package com.sunplacestudio.movieapplication.data.apicall.json.movie
 
+import com.sunplacestudio.movieapplication.utils.orNull
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -8,5 +9,5 @@ data class JsonMovie(
     @SerialName("results")
     private val _resultsList: List<JsonMovieData>? = null
 ) {
-    val resultList = _resultsList ?: emptyList()
+    val resultList = _resultsList.orNull()
 }
